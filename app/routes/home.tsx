@@ -3,7 +3,7 @@ import type { Route } from "./+types/home";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Boiler" },
-    { name: "description", content: "React Router Boilerplate" },
+    { name: "description", content: "Boiler gallery." },
   ];
 }
 
