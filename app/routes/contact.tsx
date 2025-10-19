@@ -51,7 +51,7 @@ export default function Contact() {
                   kristian@boilergallery.com
                 </a>
               </p>
-              <p>+45 000 000 00</p>
+              <p>+45 41 27 11 88</p>
               <p>Kristian Eley, Founder and Director</p>
             </div>
 
@@ -64,7 +64,7 @@ export default function Contact() {
                   johanne@boilergallery.com
                 </a>
               </p>
-              <p>+45 000 000 00</p>
+              <p>+45 60 24 09 66</p>
               <p>Johanne Schrøder, Director</p>
             </div>
           </div>
