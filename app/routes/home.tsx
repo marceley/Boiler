@@ -130,7 +130,7 @@ export default function Home() {
             We are currently working on our first exhibition. Stay tuned for updates.
           </p>
           
-          <p className="text-sm text-black dark:text-white mb-2">
+          <p className="text-sm text-black dark:text-white mb-4">
             Subscribe to get notified about upcoming exhibitions.
           </p>
           
