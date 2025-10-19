@@ -8,15 +8,23 @@ export function meta({}: Route.MetaArgs) {
     { name: "keywords", content: "contact Boiler Gallery, art gallery Copenhagen address, gallery inquiries, Store Strandstræde Copenhagen" },
     
     // Open Graph
+    { property: "og:site_name", content: "Boiler Gallery" },
     { property: "og:title", content: "Contact - Boiler Gallery" },
     { property: "og:description", content: "Contact Boiler Gallery for inquiries about artworks and exhibitions. Located in Copenhagen, Denmark." },
     { property: "og:type", content: "website" },
     { property: "og:url", content: "https://boilergallery.com/contact" },
+    { property: "og:image", content: "https://boilergallery.com/og-image.png" },
+    { property: "og:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+    { property: "og:locale", content: "en_DK" },
     
     // Twitter Card
-    { name: "twitter:card", content: "summary" },
+    { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Contact - Boiler Gallery" },
     { name: "twitter:description", content: "Get in touch with Boiler Gallery in Copenhagen for art inquiries." },
+    { name: "twitter:image", content: "https://boilergallery.com/og-image.png" },
+    { name: "twitter:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
     
     // Canonical
     { tagName: "link", rel: "canonical", href: "https://boilergallery.com/contact" },

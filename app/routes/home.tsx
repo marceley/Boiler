@@ -9,16 +9,23 @@ export function meta({}: Route.MetaArgs) {
     { name: "keywords", content: "art gallery, contemporary art, Copenhagen, Denmark, exhibitions, artworks" },
     
     // Open Graph
+    { property: "og:site_name", content: "Boiler Gallery" },
     { property: "og:title", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
     { property: "og:description", content: "Boiler Gallery is a contemporary art gallery in Copenhagen showcasing cutting-edge artworks and exhibitions." },
     { property: "og:type", content: "website" },
     { property: "og:url", content: "https://boilergallery.com" },
+    { property: "og:image", content: "https://boilergallery.com/og-image.png" },
+    { property: "og:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
     { property: "og:locale", content: "en_DK" },
     
     // Twitter Card
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
     { name: "twitter:description", content: "Boiler Gallery is a contemporary art gallery in Copenhagen showcasing cutting-edge artworks and exhibitions." },
+    { name: "twitter:image", content: "https://boilergallery.com/og-image.png" },
+    { name: "twitter:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
     
     // Canonical
     { tagName: "link", rel: "canonical", href: "https://boilergallery.com" },
