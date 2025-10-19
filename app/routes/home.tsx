@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, Form, useActionData } from "react-router";
+import { Resend } from "resend";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,7 +25,39 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const honeypot = formData.get("website");
+  
+  // Honeypot spam prevention - if filled, it's likely a bot
+  if (honeypot) {
+    return { success: false, error: "Spam detected" };
+  }
+  
+  if (!email || typeof email !== "string") {
+    return { success: false, error: "Invalid email address" };
+  }
+  
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    // Add email to audience
+    await resend.contacts.create({
+      email: email,
+      audienceId: process.env.RESEND_AUDIENCE_ID!,
+    });
+    
+    return { success: true, message: "Thank you for subscribing!" };
+  } catch (error) {
+    console.error("Resend error:", error);
+    return { success: false, error: "Failed to subscribe. Please try again." };
+  }
+}
+
 export default function Home() {
+  const actionData = useActionData<typeof action>();
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ArtGallery",
@@ -62,7 +95,7 @@ export default function Home() {
             <NavLink 
               to="/about" 
               className={({ isActive }) => 
-                `text-black dark:text-white hover:underline ${isActive ? 'underline italic' : ''}`
+                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
               }
             >
               About,
@@ -70,13 +103,58 @@ export default function Home() {
             <NavLink 
               to="/contact" 
               className={({ isActive }) => 
-                `text-black dark:text-white hover:underline ${isActive ? 'underline italic' : ''}`
+                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
               }
             >
               Contact,
             </NavLink>
           </nav>
         </header>
+        <main role="main" className="mt-12 max-w-2xl">
+          <p className="text-sm text-black dark:text-white mb-6">
+            We are currently working on our first exhibition. Stay tuned for updates.
+          </p>
+          
+          <Form method="post" className="space-y-2 max-w-md">
+            <div className="flex gap-2">
+              {/* Honeypot field - hidden from users, bots will fill it */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                className="absolute opacity-0 pointer-events-none"
+                aria-hidden="true"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                disabled={actionData?.success}
+                className="flex-1 px-2 py-1 text-sm bg-transparent border-b border-black dark:border-white text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:outline-none disabled:opacity-50"
+                aria-label="Email address"
+              />
+              <button
+                type="submit"
+                disabled={actionData?.success}
+                className="px-3 py-1 text-sm text-black dark:text-white hover:italic transition-all underline disabled:opacity-50 disabled:hover:not-italic"
+              >
+                Subscribe
+              </button>
+            </div>
+            {actionData?.success && (
+              <p className="text-xs text-black dark:text-white italic">
+                {actionData.message}
+              </p>
+            )}
+            {actionData?.error && (
+              <p className="text-xs text-black dark:text-white">
+                {actionData.error}
+              </p>
+            )}
+          </Form>
+        </main>
       </div>
     </>
   );

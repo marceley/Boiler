@@ -71,7 +71,7 @@ export default function Contact() {
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `text-black dark:text-white hover:underline ${isActive ? 'underline italic' : ''}`
+              `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
             }
           >
             About,
@@ -79,7 +79,7 @@ export default function Contact() {
           <NavLink 
             to="/contact" 
             className={({ isActive }) => 
-              `text-black dark:text-white hover:underline ${isActive ? 'underline italic' : ''}`
+              `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
             }
           >
             Contact,
@@ -131,7 +131,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="pt-4">
+          <div className="pt-4 text-xs leading-relaxed">
             <p>Boiler Gallery ApS</p>
             <p>CVR: 123456789</p>
             <p>Store Strandstræde 19</p>

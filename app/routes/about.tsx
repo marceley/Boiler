@@ -50,7 +50,7 @@ export default function About() {
           <NavLink 
             to="/about" 
             className={({ isActive }) => 
-              `text-black dark:text-white hover:underline ${isActive ? 'underline italic' : ''}`
+              `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
             }
           >
             About,
@@ -58,7 +58,7 @@ export default function About() {
           <NavLink 
             to="/contact" 
             className={({ isActive }) => 
-              `text-black dark:text-white hover:underline ${isActive ? 'underline italic' : ''}`
+              `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
             }
           >
             Contact,
