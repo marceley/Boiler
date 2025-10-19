@@ -67,23 +67,38 @@ export default function Contact() {
         <h1 className="text-xl text-black dark:text-white font-serif italic mb-4">
           <Link to="/" aria-label="Boiler Gallery Home">Boiler.</Link>
         </h1>
-        <nav role="navigation" aria-label="Main navigation" className="flex gap-4 text-sm mb-12">
-          <NavLink 
-            to="/about" 
-            className={({ isActive }) => 
-              `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
-            }
+        <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-4 text-sm mb-12 md:justify-between">
+          <div className="flex gap-4">
+            <NavLink 
+              to="/about" 
+              className={({ isActive }) => 
+                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
+              }
+            >
+              About,
+            </NavLink>
+            <NavLink 
+              to="/contact" 
+              className={({ isActive }) => 
+                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
+              }
+            >
+              Contact,
+            </NavLink>
+          </div>
+          <a 
+            href="https://www.instagram.com/boilergallery/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-black dark:text-white hover:opacity-60 transition-opacity"
+            aria-label="Follow us on Instagram"
           >
-            About,
-          </NavLink>
-          <NavLink 
-            to="/contact" 
-            className={({ isActive }) => 
-              `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
-            }
-          >
-            Contact,
-          </NavLink>
+            <img 
+              src="/instagram.svg" 
+              alt="Instagram" 
+              className="w-4 h-4"
+            />
+          </a>
         </nav>
       </header>
 
