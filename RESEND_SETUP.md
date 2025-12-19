@@ -23,14 +23,21 @@ This project uses [Resend](https://resend.com) to collect newsletter signups.
    ```bash
    RESEND_API_KEY=re_your_api_key_here
    RESEND_AUDIENCE_ID=your_audience_id_here
+   RESEND_FROM_EMAIL=noreply@boiler19.com
    ```
 
-5. **For Vercel Deployment**
+5. **Set up sending domain** (optional but recommended)
+   - Go to [Domains](https://resend.com/domains) in Resend
+   - Add your domain (e.g., boiler19.com)
+   - Follow DNS setup instructions
+   - Set `RESEND_FROM_EMAIL` environment variable
+
+6. **For Vercel Deployment**
    
    Add the environment variables in your Vercel project settings:
    - Go to your project on Vercel
    - Navigate to Settings → Environment Variables
-   - Add `RESEND_API_KEY` and `RESEND_AUDIENCE_ID`
+   - Add `RESEND_API_KEY`, `RESEND_AUDIENCE_ID`, and `RESEND_FROM_EMAIL`
    - Redeploy your project
 
 ## Features
@@ -40,6 +47,7 @@ This project uses [Resend](https://resend.com) to collect newsletter signups.
 - ✅ Success/error messages
 - ✅ Form disabled after successful signup
 - ✅ Automatic audience management via Resend
+- ✅ Email notifications to directors (johanne@boiler19.com, kristian@boiler19.com)
 
 ## Testing Locally
 

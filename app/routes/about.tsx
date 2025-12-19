@@ -1,114 +1,72 @@
 import type { Route } from "./+types/about";
-import { Link, NavLink } from "react-router";
+import { galleryData, structuredDataAbout } from "~/data/gallery";
+import { Navigation } from "~/components/Navigation";
+import { EmailForm } from "~/components/EmailForm";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "About - Boiler Gallery | Contemporary Art in Copenhagen" },
-    { name: "description", content: "Learn about Boiler Gallery, a contemporary art space in Copenhagen dedicated to showcasing innovative artworks and exhibitions." },
-    { name: "keywords", content: "about Boiler Gallery, art gallery Copenhagen, contemporary art space, Denmark art" },
-    
+    { title: `About - ${galleryData.siteName}` },
+    {
+      name: "description",
+      content: `Learn about ${galleryData.name}, ${galleryData.description}`,
+    },
+    { name: "keywords", content: galleryData.keywords },
+
     // Open Graph
-    { property: "og:site_name", content: "Boiler Gallery" },
-    { property: "og:title", content: "About - Boiler Gallery" },
-    { property: "og:description", content: "Learn about Boiler Gallery, a contemporary art space in Copenhagen dedicated to showcasing innovative artworks and exhibitions." },
+    { property: "og:site_name", content: galleryData.siteName },
+    { property: "og:title", content: `About - ${galleryData.siteName}` },
+    {
+      property: "og:description",
+      content: `Learn about ${galleryData.name}, ${galleryData.description}`,
+    },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://boilergallery.com/about" },
-    { property: "og:image", content: "https://boilergallery.com/og-image.png" },
-    { property: "og:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
+    { property: "og:url", content: `${galleryData.url}/about` },
+    { property: "og:image", content: galleryData.ogImage },
+    { property: "og:image:alt", content: galleryData.ogImageAlt },
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },
     { property: "og:locale", content: "en_DK" },
-    
+
     // Twitter Card
     { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: "About - Boiler Gallery" },
-    { name: "twitter:description", content: "Learn about Boiler Gallery, a contemporary art space in Copenhagen." },
-    { name: "twitter:image", content: "https://boilergallery.com/og-image.png" },
-    { name: "twitter:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
-    
+    { name: "twitter:title", content: `About - ${galleryData.siteName}` },
+    {
+      name: "twitter:description",
+      content: `Learn about ${galleryData.name}, ${galleryData.description}`,
+    },
+    { name: "twitter:image", content: galleryData.ogImage },
+    { name: "twitter:image:alt", content: galleryData.ogImageAlt },
+
     // Canonical
-    { tagName: "link", rel: "canonical", href: "https://boilergallery.com/about" },
+    { tagName: "link", rel: "canonical", href: `${galleryData.url}/about` },
   ];
 }
 
 export default function About() {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "mainEntity": {
-      "@type": "ArtGallery",
-      "name": "Boiler Gallery",
-      "description": "Boiler Gallery is a contemporary art gallery located in the heart of Copenhagen, Denmark. We showcase cutting-edge artworks and exhibitions from both established and emerging artists.",
-      "url": "https://boilergallery.com"
-    }
-  };
-
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredDataAbout),
+        }}
       />
       <div className="min-h-screen p-4 md:p-8 lg:p-12">
-      <header role="banner">
-        <h1 className="text-xl text-black dark:text-white font-serif italic mb-4">
-          <Link to="/" aria-label="Boiler Gallery Home">Boiler.</Link>
-        </h1>
-        <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-4 text-sm mb-12 md:justify-between">
-          <div className="flex gap-4">
-            <NavLink 
-              to="/about" 
-              className={({ isActive }) => 
-                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
-              }
-            >
-              About,
-            </NavLink>
-            <NavLink 
-              to="/contact" 
-              className={({ isActive }) => 
-                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
-              }
-            >
-              Contact,
-            </NavLink>
-          </div>
-          <a 
-            href="https://www.instagram.com/boilergallery/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-black dark:text-white hover:opacity-60 transition-opacity"
-            aria-label="Follow us on Instagram"
-          >
-            <img 
-              src="/instagram.svg" 
-              alt="Instagram" 
-              className="w-4 h-4"
-            />
-          </a>
-        </nav>
-      </header>
+        <Navigation />
 
-      <main role="main" className="max-w-2xl">
-        <article className="space-y-4 text-sm text-black dark:text-white">
-          <p>
-            Boiler Gallery is a contemporary art gallery located in the heart of Copenhagen, 
-            Denmark. We showcase cutting-edge artworks and exhibitions from both established 
-            and emerging artists.
-          </p>
-          <p>
-            Our mission is to create a dynamic space where art enthusiasts can discover and 
-            engage with innovative contemporary art. We believe in fostering meaningful 
-            connections between artists and audiences.
-          </p>
-          <p>
-            Founded by Kristian Eley and directed by Johanne Schrøder, Boiler Gallery is 
-            committed to presenting thought-provoking exhibitions that challenge and inspire.
-          </p>
-        </article>
-      </main>
-    </div>
+        <main role="main" className="max-w-2xl mt-12">
+          <article className="space-y-4 text-sm text-black">
+            <p className="leading-relaxed">{galleryData.description}</p>
+          </article>
+
+          <div className="mt-12 pt-8 border-t border-black">
+            <p className="text-sm text-black mb-4">
+              Subscribe to get notified about upcoming exhibitions.
+            </p>
+            <EmailForm />
+          </div>
+        </main>
+      </div>
     </>
   );
 }
-

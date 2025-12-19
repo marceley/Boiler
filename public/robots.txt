@@ -3,5 +3,5 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://boilergallery.com/sitemap.xml
+Sitemap: https://boiler19.com/sitemap.xml
 

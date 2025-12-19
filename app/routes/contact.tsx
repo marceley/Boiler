@@ -1,170 +1,112 @@
 import type { Route } from "./+types/contact";
-import { Link, NavLink } from "react-router";
+import { galleryData, structuredDataContact } from "~/data/gallery";
+import { Navigation } from "~/components/Navigation";
+import { EmailForm } from "~/components/EmailForm";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Contact - Boiler Gallery | Get in Touch" },
-    { name: "description", content: "Contact Boiler Gallery for inquiries about artworks and exhibitions. Located at Store Strandstræde 19, Copenhagen, Denmark." },
-    { name: "keywords", content: "contact Boiler Gallery, art gallery Copenhagen address, gallery inquiries, Store Strandstræde Copenhagen" },
-    
+    { title: `Contact - ${galleryData.siteName} | Get in Touch` },
+    {
+      name: "description",
+      content: `Contact ${galleryData.name} for inquiries about artworks and exhibitions. Located at ${galleryData.address.streetAddress}, ${galleryData.address.addressLocality}, ${galleryData.address.addressCountry}.`,
+    },
+    { name: "keywords", content: galleryData.keywords },
+
     // Open Graph
-    { property: "og:site_name", content: "Boiler Gallery" },
-    { property: "og:title", content: "Contact - Boiler Gallery" },
-    { property: "og:description", content: "Contact Boiler Gallery for inquiries about artworks and exhibitions. Located in Copenhagen, Denmark." },
+    { property: "og:site_name", content: galleryData.siteName },
+    { property: "og:title", content: `Contact - ${galleryData.siteName}` },
+    {
+      property: "og:description",
+      content: `Contact ${galleryData.name} for inquiries about artworks and exhibitions. Located in ${galleryData.address.addressLocality}, ${galleryData.address.addressCountry}.`,
+    },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://boilergallery.com/contact" },
-    { property: "og:image", content: "https://boilergallery.com/og-image.png" },
-    { property: "og:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
+    { property: "og:url", content: `${galleryData.url}/contact` },
+    { property: "og:image", content: galleryData.ogImage },
+    { property: "og:image:alt", content: galleryData.ogImageAlt },
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },
     { property: "og:locale", content: "en_DK" },
-    
+
     // Twitter Card
     { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: "Contact - Boiler Gallery" },
-    { name: "twitter:description", content: "Get in touch with Boiler Gallery in Copenhagen for art inquiries." },
-    { name: "twitter:image", content: "https://boilergallery.com/og-image.png" },
-    { name: "twitter:image:alt", content: "Boiler Gallery - Contemporary Art Gallery in Copenhagen" },
-    
+    { name: "twitter:title", content: `Contact - ${galleryData.siteName}` },
+    {
+      name: "twitter:description",
+      content: `Get in touch with ${galleryData.name} in ${galleryData.address.addressLocality} for art inquiries.`,
+    },
+    { name: "twitter:image", content: galleryData.ogImage },
+    { name: "twitter:image:alt", content: galleryData.ogImageAlt },
+
     // Canonical
-    { tagName: "link", rel: "canonical", href: "https://boilergallery.com/contact" },
+    { tagName: "link", rel: "canonical", href: `${galleryData.url}/contact` },
   ];
 }
 
 export default function Contact() {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "mainEntity": {
-      "@type": "ArtGallery",
-      "name": "Boiler Gallery",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Store Strandstræde 19",
-        "addressLocality": "Copenhagen",
-        "postalCode": "1255",
-        "addressCountry": "DK"
-      },
-      "telephone": "+45 41 27 11 88",
-      "email": "kristian@boilergallery.com",
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "telephone": "+45 41 27 11 88",
-          "email": "kristian@boilergallery.com",
-          "contactType": "Director"
-        },
-        {
-          "@type": "ContactPoint",
-          "telephone": "+45 60 24 09 66",
-          "email": "johanne@boilergallery.com",
-          "contactType": "Director"
-        }
-      ]
-    }
-  };
-
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredDataContact),
+        }}
       />
       <div className="min-h-screen p-4 md:p-8 lg:p-12">
-      <header role="banner">
-        <h1 className="text-xl text-black dark:text-white font-serif italic mb-4">
-          <Link to="/" aria-label="Boiler Gallery Home">Boiler.</Link>
-        </h1>
-        <nav role="navigation" aria-label="Main navigation" className="flex items-center gap-4 text-sm mb-12 md:justify-between">
-          <div className="flex gap-4">
-            <NavLink 
-              to="/about" 
-              className={({ isActive }) => 
-                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
-              }
-            >
-              About,
-            </NavLink>
-            <NavLink 
-              to="/contact" 
-              className={({ isActive }) => 
-                `text-black dark:text-white hover:underline hover:italic ${isActive ? 'underline italic' : ''}`
-              }
-            >
-              Contact,
-            </NavLink>
-          </div>
-          <a 
-            href="https://www.instagram.com/boilergallery/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-black dark:text-white hover:opacity-60 transition-opacity"
-            aria-label="Follow us on Instagram"
-          >
-            <img 
-              src="/instagram.svg" 
-              alt="Instagram" 
-              className="w-4 h-4"
-            />
-          </a>
-        </nav>
-      </header>
+        <Navigation />
 
-      <main role="main" className="max-w-2xl">
-        <address className="space-y-6 text-sm text-black dark:text-white not-italic">
-          <p>
-            For inquires about artworks, exhibitions etc., do not hesitate to contact us at
-          </p>
-          
-          <div className="space-y-4">
-            <div>
-              <p>
-                <a 
-                  href="mailto:kristian@boilergallery.com" 
-                  className="underline hover:opacity-60"
-                  aria-label="Email Kristian at kristian@boilergallery.com"
-                >
-                  kristian@boilergallery.com
-                </a>
-              </p>
-              <p>
-                <a href="tel:+4541271188" aria-label="Call Kristian at +45 41 27 11 88">
-                  +45 41 27 11 88
-                </a>
-              </p>
-              <p>Kristian Eley, Founder and Director</p>
+        <main role="main" className="max-w-2xl mt-12">
+          <address className="space-y-6 text-sm text-black not-italic">
+            <p>
+              For inquires about artworks, exhibitions etc., do not hesitate to
+              contact us at
+            </p>
+
+            <div className="space-y-4">
+              {galleryData.contactPoints.map((point) => (
+                <div key={point.email}>
+                  <p>
+                    <a
+                      href={`mailto:${point.email}`}
+                      className="underline hover:opacity-60"
+                      aria-label={`Email ${point.name} at ${point.email}`}
+                    >
+                      {point.email}
+                    </a>
+                  </p>
+                  <p>
+                    <a
+                      href={`tel:${point.telephone.replace(/\s/g, "")}`}
+                      aria-label={`Call ${point.name} at ${point.telephone}`}
+                    >
+                      {point.telephone}
+                    </a>
+                  </p>
+                  <p>
+                    {point.name}, {point.title}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            <div>
+            <div className="pt-4 text-xs leading-relaxed">
+              <p>{galleryData.companyName}</p>
+              <p>{galleryData.address.streetAddress}</p>
               <p>
-                <a 
-                  href="mailto:johanne@boilergallery.com" 
-                  className="underline hover:opacity-60"
-                  aria-label="Email Johanne at johanne@boilergallery.com"
-                >
-                  johanne@boilergallery.com
-                </a>
+                DK-{galleryData.address.postalCode}{" "}
+                {galleryData.address.addressLocality}
               </p>
-              <p>
-                <a href="tel:+4560240966" aria-label="Call Johanne at +45 60 24 09 66">
-                  +45 60 24 09 66
-                </a>
-              </p>
-              <p>Johanne Schrøder, Director</p>
+              <p>Denmark</p>
             </div>
-          </div>
+          </address>
 
-          <div className="pt-4 text-xs leading-relaxed">
-            <p>Boiler Gallery ApS</p>
-            <p>CVR: 123456789</p>
-            <p>Store Strandstræde 19</p>
-            <p>DK-1255 Copenhagen</p>
-            <p>Denmark</p>
+          <div className="mt-12 pt-8 border-t border-black">
+            <p className="text-sm text-black mb-4">
+              Subscribe to get notified about upcoming exhibitions.
+            </p>
+            <EmailForm />
           </div>
-        </address>
-      </main>
-    </div>
+        </main>
+      </div>
     </>
   );
 }
-
