@@ -33,7 +33,7 @@ export async function action({ request }: Route.ActionArgs) {
     // Send notification email to both directors
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
-      to: ["johanne@boiler19.com", "kristian@boiler19.com"],
+      to: ["marc@eley.dk"],
       subject: "New Newsletter Subscription",
       html: `
         <h2>New Newsletter Subscription</h2>
