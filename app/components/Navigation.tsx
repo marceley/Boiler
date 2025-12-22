@@ -4,9 +4,9 @@ import { galleryData } from "~/data/gallery";
 export function Navigation() {
   return (
     <header role="banner">
-      <h1 className="text-xl text-black font-serif italic mb-4">
+      <h1 className="text-xl text-black font-serif italic mb-6">
         <Link to="/" aria-label="Boiler19 Home">
-          Boiler.
+          <img src="/logo.png" alt="Boiler19 Logo" className="w-25 h-auto" />
         </Link>
       </h1>
       <nav
@@ -21,7 +21,7 @@ export function Navigation() {
               `text-black hover:underline hover:italic ${isActive ? "underline italic" : ""}`
             }
           >
-            About,
+            about,
           </NavLink>
           <NavLink
             to="/contact"
@@ -29,7 +29,7 @@ export function Navigation() {
               `text-black hover:underline hover:italic ${isActive ? "underline italic" : ""}`
             }
           >
-            Contact,
+            contact,
           </NavLink>
         </div>
         <a

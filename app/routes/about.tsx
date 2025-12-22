@@ -56,15 +56,17 @@ export default function About() {
 
         <main role="main" className="max-w-2xl mt-12">
           <article className="space-y-4 text-sm text-black">
-            <p className="leading-relaxed">{galleryData.description}</p>
-          </article>
-
-          <div className="mt-12 pt-8 border-t border-black">
-            <p className="text-sm text-black mb-4">
-              Subscribe to get notified about upcoming exhibitions.
+            <p className="leading-relaxed">
+              Boiler is an underground gallery in Copenhagen by architect
+              Kristian Eley and art historian Johanne Schrøder.
+            </p>{" "}
+            <p className="leading-relaxed">
+              The program is focused on project-based artist collaborations and
+              is shaped by curiosity, a sensibility to matter, and the meeting
+              of generations. The first exhibitions will feature established
+              Danish artists.
             </p>
-            <EmailForm />
-          </div>
+          </article>
         </main>
       </div>
     </>

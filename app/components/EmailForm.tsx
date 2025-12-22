@@ -7,7 +7,7 @@ interface EmailFormProps {
 
 export function EmailForm({
   action = "/api/subscribe",
-  className = "space-y-2 max-w-md",
+  className = "",
 }: EmailFormProps) {
   const fetcher = useFetcher();
   const isLoading = fetcher.state === "submitting";
@@ -17,7 +17,7 @@ export function EmailForm({
   return (
     <div className={className}>
       <fetcher.Form method="post" action={action}>
-        <div className="flex gap-2">
+        <div className="space-y-2">
           {/* Honeypot field - hidden from users, bots will fill it */}
           <input
             type="text"
@@ -28,30 +28,37 @@ export function EmailForm({
             aria-hidden="true"
           />
           <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            required
+            disabled={isLoading}
+            className="w-full pr-2 py-1 text-sm bg-transparent border-b border-black text-black placeholder:text-gray-400 focus:outline-none disabled:opacity-50"
+            aria-label="Name"
+          />
+          <input
             type="email"
             name="email"
-            placeholder="Enter your email"
+            placeholder="Email"
             required
-            disabled={isLoading || isSuccess}
-            className="flex-1 px-2 py-1 text-sm bg-transparent border-b border-black text-black placeholder:text-gray-400 focus:outline-none disabled:opacity-50"
+            disabled={isLoading}
+            className="w-full pr-2 py-1 text-sm bg-transparent border-b border-black text-black placeholder:text-gray-400 focus:outline-none disabled:opacity-50"
             aria-label="Email address"
           />
           <button
             type="submit"
-            disabled={isLoading || isSuccess}
-            className="px-3 py-1 text-sm text-black hover:italic transition-all underline disabled:opacity-50 disabled:hover:not-italic"
+            disabled={isLoading}
+            className="px-3 py-1 text-sm text-black border border-black hover:italic transition-all disabled:opacity-50 disabled:hover:not-italic mt-3"
           >
             Subscribe
           </button>
         </div>
       </fetcher.Form>
       {isSuccess && actionData?.message && (
-        <p className="text-xs text-black italic">
-          {actionData.message}
-        </p>
+        <p className="text-xs text-black italic mt-4">{actionData.message}</p>
       )}
       {actionData?.error && !isSuccess && (
-        <p className="text-xs text-black">{actionData.error}</p>
+        <p className="text-xs text-black mt-4">{actionData.error}</p>
       )}
     </div>
   );

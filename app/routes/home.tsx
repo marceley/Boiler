@@ -66,16 +66,7 @@ export default function Home() {
       />
       <div className="min-h-screen p-4 md:p-8 lg:p-12">
         <Navigation />
-        <main role="main" className="mt-12 max-w-2xl">
-          <p className="text-sm text-black mb-6">
-            We are currently working on our first exhibition. Stay tuned for
-            updates.
-          </p>
-          <p className="text-sm text-black mb-4">
-            Subscribe to get notified about upcoming exhibitions.
-          </p>
-          <EmailForm />
-        </main>
+        <main role="main" className="mt-12 max-w-2xl"></main>
       </div>
     </>
   );

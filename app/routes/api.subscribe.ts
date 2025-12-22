@@ -4,6 +4,7 @@ import { Resend } from "resend";
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
+  const name = formData.get("name");
   const honeypot = formData.get("website");
 
   // Honeypot spam prevention - if filled, it's likely a bot
@@ -15,12 +16,17 @@ export async function action({ request }: Route.ActionArgs) {
     return { success: false, error: "Invalid email address" };
   }
 
+  if (!name || typeof name !== "string") {
+    return { success: false, error: "Name is required" };
+  }
+
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Add email to audience
     await resend.contacts.create({
       email: email,
+      firstName: name,
       audienceId: process.env.RESEND_AUDIENCE_ID!,
     });
 
@@ -32,6 +38,7 @@ export async function action({ request }: Route.ActionArgs) {
       html: `
         <h2>New Newsletter Subscription</h2>
         <p>A new subscriber has signed up for the newsletter:</p>
+        <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
       `,

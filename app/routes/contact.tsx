@@ -56,23 +56,20 @@ export default function Contact() {
 
         <main role="main" className="max-w-2xl mt-12">
           <address className="space-y-6 text-sm text-black not-italic">
-            <p>
-              For inquires about artworks, exhibitions etc., do not hesitate to
-              contact us at
-            </p>
+            <div className="leading-relaxed mb-[6em]">
+              <p>{galleryData.companyName}</p>
+              <p>{galleryData.address.streetAddress}</p>
+              <p>
+                DK-{galleryData.address.postalCode}{" "}
+                {galleryData.address.addressLocality}
+              </p>
+              <p>Denmark</p>
+            </div>
 
-            <div className="space-y-4">
+            <div className="leading-relaxed">
               {galleryData.contactPoints.map((point) => (
-                <div key={point.email}>
-                  <p>
-                    <a
-                      href={`mailto:${point.email}`}
-                      className="underline hover:opacity-60"
-                      aria-label={`Email ${point.name} at ${point.email}`}
-                    >
-                      {point.email}
-                    </a>
-                  </p>
+                <div key={point.email} className="mb-[2em]">
+                  <p className="font-bold">{point.name}</p>
                   <p>
                     <a
                       href={`tel:${point.telephone.replace(/\s/g, "")}`}
@@ -82,28 +79,22 @@ export default function Contact() {
                     </a>
                   </p>
                   <p>
-                    {point.name}, {point.title}
+                    <a
+                      href={`mailto:${point.email}`}
+                      className="underline hover:opacity-60"
+                      aria-label={`Email ${point.name} at ${point.email}`}
+                    >
+                      {point.email}
+                    </a>
                   </p>
                 </div>
               ))}
             </div>
-
-            <div className="pt-4 text-xs leading-relaxed">
-              <p>{galleryData.companyName}</p>
-              <p>{galleryData.address.streetAddress}</p>
-              <p>
-                DK-{galleryData.address.postalCode}{" "}
-                {galleryData.address.addressLocality}
-              </p>
-              <p>Denmark</p>
-            </div>
           </address>
 
-          <div className="mt-12 pt-8 border-t border-black">
-            <p className="text-sm text-black mb-4">
-              Subscribe to get notified about upcoming exhibitions.
-            </p>
-            <EmailForm />
+          <div className="mt-12 pt-8">
+            <p className="text-sm text-black mb-4">Subscribe for news</p>
+            <EmailForm className="max-w-sm" />
           </div>
         </main>
       </div>
