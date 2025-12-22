@@ -55,8 +55,8 @@ export default function Contact() {
         <Navigation />
 
         <main role="main" className="max-w-2xl mt-12">
-          <address className="space-y-6 text-sm text-black not-italic">
-            <div className="leading-relaxed mb-[6em]">
+          <address className="text-sm not-italic leading-relaxed">
+            <div className="mb-[6em]">
               <p>{galleryData.companyName}</p>
               <p>{galleryData.address.streetAddress}</p>
               <p>
@@ -92,7 +92,7 @@ export default function Contact() {
             </div>
           </address>
 
-          <div className="mt-12 pt-8">
+          <div className="mt-[12em]">
             <p className="text-sm text-black mb-4">Subscribe for news</p>
             <EmailForm className="max-w-sm" />
           </div>
