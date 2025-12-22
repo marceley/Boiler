@@ -91,19 +91,6 @@ This project is configured for deployment on Vercel. The `vercel.json` file cont
    - `RESEND_FROM_EMAIL`
 4. Deploy
 
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t boiler .
-
-# Run the container
-docker run -p 3000:3000 boiler
-```
-
-The containerized application can be deployed to any platform that supports Docker.
-
 ## Project Structure
 
 ```
@@ -121,6 +108,7 @@ The containerized application can be deployed to any platform that supports Dock
 ## Newsletter Subscription
 
 The website includes a newsletter subscription form that:
+
 - Collects name and email
 - Uses Resend for email management
 - Includes honeypot spam prevention
