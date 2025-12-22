@@ -69,7 +69,7 @@ export default function Contact() {
             <div className="leading-relaxed">
               {galleryData.contactPoints.map((point) => (
                 <div key={point.email} className="mb-[2em]">
-                  <p className="font-bold">{point.name}</p>
+                  <p>{point.name}</p>
                   <p>
                     <a
                       href={`tel:${point.telephone.replace(/\s/g, "")}`}
