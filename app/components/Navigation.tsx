@@ -6,13 +6,7 @@ export function Navigation() {
     <header role="banner">
       <h1 className="text-xl text-black font-serif italic mb-6">
         <Link to="/" aria-label="Boiler Home">
-          <img
-            src="/logo.png"
-            alt="Boiler Logo"
-            className="w-25 h-auto"
-            width={100}
-            height="auto"
-          />
+          <img src="/logo.png" alt="Boiler Logo" width="100" height="34" />
         </Link>
       </h1>
       <nav
