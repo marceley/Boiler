@@ -36,7 +36,7 @@ export function Navigation() {
           href={galleryData.instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-black hover:opacity-60 transition-opacity"
+          className="text-black hover:underline hover:italic"
           aria-label="Follow us on Instagram"
         >
           instagram
