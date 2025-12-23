@@ -23,6 +23,11 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Playfair+Display:ital@1&display=swap",
   },
   {
+    rel: "preload",
+    href: "/logo.png",
+    as: "image",
+  },
+  {
     rel: "icon",
     href: "/favicon-light.svg",
     type: "image/svg+xml",
