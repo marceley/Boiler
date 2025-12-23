@@ -45,7 +45,7 @@ export function Navigation() {
           className="text-black hover:opacity-60 transition-opacity"
           aria-label="Follow us on Instagram"
         >
-          <img src="/instagram.svg" alt="Instagram logo" className="w-4 h-4" />
+          instagram
         </a>
       </nav>
     </header>
