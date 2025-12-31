@@ -1,9 +1,9 @@
 import { Link, NavLink } from "react-router";
 import { galleryData } from "~/data/gallery";
 
-export function Navigation() {
+export function Navigation({ className }: { className?: string }) {
   return (
-    <header role="banner">
+    <header role="banner" className={className}>
       <h1 className="text-xl text-black font-serif italic mb-6">
         <Link to="/" aria-label="Boiler19 Home">
           <img src="/logo.png" alt="Boiler19 Logo" className="w-25 h-auto" />
