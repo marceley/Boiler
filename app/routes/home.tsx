@@ -1,7 +1,6 @@
 import type { Route } from "./+types/home";
 import { galleryData, structuredData } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
-import { EmailForm } from "~/components/EmailForm";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -73,7 +72,7 @@ export default function Home() {
           <div className="flex flex-col justify-center">
             <img
               src="/fingers.gif"
-              alt="Boiler19"
+              alt="Boiler"
               className="w-full h-auto block"
             />
             <div className="text-xs mt-2">&copy; 2026 Boiler</div>

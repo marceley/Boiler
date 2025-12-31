@@ -1,6 +1,6 @@
 export const galleryData = {
-  name: "Boiler19",
-  title: "Boiler19 - underground gallery in Copenhagen",
+  name: "Boiler",
+  title: "Boiler - underground gallery in Copenhagen",
   description:
     "Boiler is an underground gallery in Copenhagen by architect Kristian Eley and art historian Johanne Schrøder. The program is focused on project-based artist collaborations and is shaped by curiosity, a sensibility to matter, and the meeting of generations. The first exhibitions will feature established Danish artists.",
   shortDescription:

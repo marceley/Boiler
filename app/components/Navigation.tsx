@@ -6,7 +6,7 @@ export function Navigation({ className }: { className?: string }) {
     <header role="banner" className={className}>
       <h1 className="text-xl text-black font-serif italic mb-6">
         <Link to="/" aria-label="Boiler19 Home">
-          <img src="/logo.png" alt="Boiler19 Logo" className="w-25 h-auto" />
+          <img src="/logo.png" alt="Boiler Logo" className="w-25 h-auto" />
         </Link>
       </h1>
       <nav
