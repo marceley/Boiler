@@ -1,7 +1,6 @@
 import type { Route } from "./+types/home";
 import { galleryData, structuredData } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
-import { EmailForm } from "~/components/EmailForm";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -64,9 +63,21 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <div className="min-h-screen p-4 md:p-8 lg:p-12">
-        <Navigation />
-        <main role="main" className="mt-12 max-w-2xl"></main>
+      <div className="min-h-screen p-4 md:p-8 lg:p-12 flex flex-col">
+        <Navigation className="mb-12" />
+        <main
+          role="main"
+          className="flex-1 flex flex-col justify-center md:mx-auto w-full md:w-auto"
+        >
+          <div className="flex flex-col justify-center">
+            <img
+              src="/fingers.gif"
+              alt="Boiler"
+              className="w-full h-auto block"
+            />
+            <div className="text-xs mt-2">&copy; 2026 Boiler</div>
+          </div>
+        </main>
       </div>
     </>
   );
