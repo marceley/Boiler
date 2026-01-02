@@ -1,18 +1,27 @@
-# Welcome to React Router!
+# Boiler
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+Website for Boiler, an underground gallery in Copenhagen by architect Kristian Eley and art historian Johanne Schrøder.
 
 ## Features
 
-- 🚀 Server-side rendering
+- 🚀 Server-side rendering with React Router
 - ⚡️ Hot Module Replacement (HMR)
 - 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
 - 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- 🎨 TailwindCSS for styling
+- 📧 Newsletter subscription with Resend
+- 📱 Responsive design
+- 🔍 SEO optimized with structured data
+- 📊 Vercel Analytics integration
+
+## Tech Stack
+
+- **Framework:** React Router v7
+- **Language:** TypeScript
+- **Styling:** TailwindCSS v4
+- **Email:** Resend
+- **Deployment:** Vercel
+- **Runtime:** Node.js
 
 ## Getting Started
 
@@ -24,6 +33,18 @@ Install the dependencies:
 npm install
 ```
 
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```bash
+RESEND_API_KEY=re_your_api_key_here
+RESEND_AUDIENCE_ID=your_audience_id_here
+RESEND_FROM_EMAIL=noreply@boiler19.com
+```
+
+See [RESEND_SETUP.md](./RESEND_SETUP.md) for detailed setup instructions.
+
 ### Development
 
 Start the development server with HMR:
@@ -34,6 +55,14 @@ npm run dev
 
 Your application will be available at `http://localhost:5173`.
 
+### Type Checking
+
+Run TypeScript type checking:
+
+```bash
+npm run typecheck
+```
+
 ## Building for Production
 
 Create a production build:
@@ -42,45 +71,61 @@ Create a production build:
 npm run build
 ```
 
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
+Start the production server:
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+npm start
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+## Deployment
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+This project is configured for deployment on Vercel. The `vercel.json` file contains the necessary configuration.
 
-### DIY Deployment
+### Vercel Deployment
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
+1. Push your code to a Git repository
+2. Import the project in Vercel
+3. Add environment variables in Vercel project settings:
+   - `RESEND_API_KEY`
+   - `RESEND_AUDIENCE_ID`
+   - `RESEND_FROM_EMAIL`
+4. Deploy
 
-Make sure to deploy the output of `npm run build`
+## Project Structure
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+├── app/
+│   ├── components/      # React components
+│   ├── data/           # Data and configuration
+│   ├── routes/         # Route handlers and pages
+│   ├── root.tsx        # Root layout
+│   └── app.css         # Global styles
+├── public/             # Static assets
+├── build/              # Production build output
+└── package.json
 ```
+
+## Newsletter Subscription
+
+The website includes a newsletter subscription form that:
+
+- Collects name and email
+- Uses Resend for email management
+- Includes honeypot spam prevention
+- Sends notifications to gallery directors
+- Stores subscribers in a Resend audience
+
+See [RESEND_SETUP.md](./RESEND_SETUP.md) for setup details.
+
+## Pages
+
+- **Home** (`/`) - Main landing page with newsletter subscription
+- **About** (`/about`) - Information about the gallery
+- **Contact** (`/contact`) - Contact information and subscription form
 
 ## Styling
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+This project uses [TailwindCSS v4](https://tailwindcss.com/) for styling. Styles are configured in `app/app.css` using the new `@theme` directive.
 
 ---
 

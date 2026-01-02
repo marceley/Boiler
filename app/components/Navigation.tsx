@@ -5,8 +5,8 @@ export function Navigation({ className }: { className?: string }) {
   return (
     <header role="banner" className={className}>
       <h1 className="text-xl text-black font-serif italic mb-6">
-        <Link to="/" aria-label="Boiler19 Home">
-          <img src="/logo.png" alt="Boiler Logo" className="w-25 h-auto" />
+        <Link to="/" aria-label="Boiler Home">
+          <img src="/logo.png" alt="Boiler Logo" width="100" height="34" />
         </Link>
       </h1>
       <nav
@@ -36,10 +36,10 @@ export function Navigation({ className }: { className?: string }) {
           href={galleryData.instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-black hover:opacity-60 transition-opacity"
+          className="text-black hover:underline hover:italic"
           aria-label="Follow us on Instagram"
         >
-          <img src="/instagram.svg" alt="Instagram logo" className="w-4 h-4" />
+          instagram
         </a>
       </nav>
     </header>

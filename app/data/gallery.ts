@@ -4,7 +4,7 @@ export const galleryData = {
   description:
     "Boiler is an underground gallery in Copenhagen by architect Kristian Eley and art historian Johanne Schrøder. The program is focused on project-based artist collaborations and is shaped by curiosity, a sensibility to matter, and the meeting of generations. The first exhibitions will feature established Danish artists.",
   shortDescription:
-    "BOILER is an underground gallery by architect Kristian Eley and art historian Johanne Schrøder.",
+    "Boiler is an underground gallery by architect Kristian Eley and art historian Johanne Schrøder.",
   url: "https://boiler19.com",
   siteName: "Boiler",
   address: {
@@ -24,7 +24,7 @@ export const galleryData = {
     "art gallery, contemporary art, Copenhagen, Denmark, exhibitions, artworks",
   ogImage: "https://boiler19.com/og-image.png",
   ogImageAlt: "Boiler - underground gallery in Copenhagen",
-  companyName: "Boiler19",
+  companyName: "Boiler",
   contactPoints: [
     {
       name: "Kristian Eley",
