@@ -3,10 +3,12 @@ import { galleryData } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
 import { getCurrentExhibition } from "~/models/exhibitions.server";
-import { formatDateRangeEn } from "~/lib/date";
+import { ViewsCarousel } from "~/components/ViewsCarousel";
+import { ExhibitionHeader } from "~/components/ExhibitionHeader";
+import { ExhibitionDescription } from "~/components/ExhibitionDescription";
+import { WorksGrid } from "~/components/WorksGrid";
 import { WorksOverlay } from "~/components/WorksOverlay";
-import useEmblaCarousel from "embla-carousel-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const baseUrl = `${galleryData.url}/exhibitions/current`;
 
@@ -59,16 +61,6 @@ export default function Current() {
   const [worksOverlayIndex, setWorksOverlayIndex] = useState<number | null>(
     null,
   );
-  const [emblaRef, emblaApi] = useEmblaCarousel();
-
-  const goToPrev = () => emblaApi?.scrollPrev();
-  const goToNext = () => emblaApi?.scrollNext();
-
-  useEffect(() => {
-    emblaApi?.on("init", () => {
-      console.log("Embla initialized");
-    });
-  }, [emblaApi]);
 
   return (
     <div className="min-h-screen p-4 md:p-8 lg:p-12">
@@ -77,80 +69,21 @@ export default function Current() {
       <main role="main" className="mt-12">
         {exhibition && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-12">
-              <div id="views" className="embla">
-                <div className="embla__viewport" ref={emblaRef}>
-                  <div className="embla__container">
-                    {exhibition.views.map((view, index) => (
-                      <div className="embla__slide" key={view.title + index}>
-                        <div className="w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center">
-                          {view.image?.url ? (
-                            <img
-                              src={view.image.url}
-                              alt={view.title}
-                              className="w-full h-full object-contain"
-                            />
-                          ) : null}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <button className="embla__prev" onClick={goToPrev}>
-                  Scroll to prev
-                </button>
-                <button className="embla__next" onClick={goToNext}>
-                  Scroll to next
-                </button>
-              </div>
-            </div>
-            <div
-              id="artists"
-              className="text-sm text-black leading-relaxed mb-8"
-            >
-              <h3>
-                {exhibition.artists.map((a) => a.fullName).join(" &amp; ")}
-              </h3>
-              <div>{exhibition.title}</div>
-              <div>
-                {formatDateRangeEn(exhibition.startDate, exhibition.endDate)}
-              </div>
-            </div>
-            <article
-              className="mb-16 space-y-4 text-sm text-black leading-relaxed lg:columns-2 lg:gap-x-12"
-              dangerouslySetInnerHTML={{ __html: exhibition.description ?? "" }}
-            ></article>
-            <div
-              id="works"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
-            >
-              {exhibition.works.map((work, index) => (
-                <button
-                  key={work.title}
-                  type="button"
-                  onClick={() => setWorksOverlayIndex(index)}
-                  className="flex flex-col text-left cursor-pointer hover:opacity-80 transition-opacity"
-                >
-                  <div className="w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center">
-                    {work.image?.url ? (
-                      <img
-                        src={work.image.url}
-                        alt={work.title}
-                        className="w-full h-full object-contain"
-                      />
-                    ) : null}
-                  </div>
-                  <div className="mt-2 text-xs text-black">
-                    <h3 className="italic">{work.title}</h3>
-                    {work.description && (
-                      <div className="leading-relaxed">{work.description}</div>
-                    )}
-                    {work.year && <div>{work.year}</div>}
-                    {work.sizeInfo && <div>{work.sizeInfo}</div>}
-                  </div>
-                </button>
-              ))}
-            </div>
+            <ViewsCarousel views={exhibition.views} />
+            <ExhibitionHeader
+              artists={exhibition.artists}
+              title={exhibition.title}
+              startDate={exhibition.startDate}
+              endDate={exhibition.endDate}
+              dateFormat="long"
+            />
+            <ExhibitionDescription
+              html={exhibition.description ?? ""}
+            />
+            <WorksGrid
+              works={exhibition.works}
+              onWorkClick={setWorksOverlayIndex}
+            />
             {worksOverlayIndex !== null && (
               <WorksOverlay
                 works={exhibition.works}

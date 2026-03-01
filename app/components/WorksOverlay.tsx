@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import { ImageBox } from "~/components/ImageBox";
 import type { Work } from "~/models/exhibitions.server";
 
 type WorksOverlayProps = {
@@ -62,7 +63,9 @@ export function WorksOverlay({
                           className="max-w-full max-h-[70vh] w-auto h-auto object-contain object-left-top block"
                         />
                       ) : (
-                        <div className="w-full aspect-4/3 max-w-2xl bg-[#ebebeb]" />
+                        <div className="w-full max-w-2xl">
+                          <ImageBox src={null} alt={work.title} />
+                        </div>
                       )}
                     </div>
                     <div className="mt-2 w-full flex justify-between items-start gap-4 text-xs text-black min-w-0">

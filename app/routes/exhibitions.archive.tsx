@@ -1,9 +1,9 @@
 import type { Route } from "./+types/exhibitions.archive";
 import { galleryData } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
-import { useLoaderData, Link } from "react-router";
+import { useLoaderData } from "react-router";
 import { getAllExhibitions } from "~/models/exhibitions.server";
-import { formatDateRangeShort } from "~/lib/date";
+import { ExhibitionCard } from "~/components/ExhibitionCard";
 
 const baseUrl = `${galleryData.url}/exhibitions/archive`;
 
@@ -60,46 +60,9 @@ export default function Archive() {
 
       <main role="main" className="mt-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {exhibitions.map((exhibition) => {
-            const imageUrl =
-              exhibition.views[0]?.image?.url ??
-              exhibition.works[0]?.image?.url;
-
-            return (
-              <Link
-                key={exhibition.id}
-                to={`/exhibitions/${exhibition.slug}`}
-                className="flex flex-col text-sm text-black hover:opacity-80 transition-opacity"
-              >
-                <div className="w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center">
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt={exhibition.title}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : null}
-                </div>
-                <div className="mt-4 space-y-1">
-                  <p className="font-medium">
-                    {exhibition.artists.map((a) => a.fullName).join(" & ")}
-                  </p>
-                  <p className="italic">{exhibition.title}</p>
-                  {formatDateRangeShort(
-                    exhibition.startDate,
-                    exhibition.endDate,
-                  ) && (
-                    <p className="text-black/70">
-                      {formatDateRangeShort(
-                        exhibition.startDate,
-                        exhibition.endDate,
-                      )}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            );
-          })}
+          {exhibitions.map((exhibition) => (
+            <ExhibitionCard key={exhibition.id} exhibition={exhibition} />
+          ))}
         </div>
       </main>
     </div>
