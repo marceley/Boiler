@@ -16,7 +16,7 @@ export function Navigation({ className }: { className?: string }) {
       >
         <div className="flex gap-4">
           <NavLink
-            to="/current"
+            to="/exhibitions/current"
             className={({ isActive }) =>
               `text-black hover:underline hover:italic ${isActive ? "underline italic" : ""}`
             }
@@ -24,7 +24,7 @@ export function Navigation({ className }: { className?: string }) {
             current,
           </NavLink>
           <NavLink
-            to="/archive"
+            to="/exhibitions/archive"
             className={({ isActive }) =>
               `text-black hover:underline hover:italic ${isActive ? "underline italic" : ""}`
             }
