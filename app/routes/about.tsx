@@ -1,7 +1,8 @@
 import type { Route } from "./+types/about";
 import { galleryData, structuredDataAbout } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
-import { EmailForm } from "~/components/EmailForm";
+import { useLoaderData } from "react-router";
+import { getAboutPage } from "~/graphql/pages";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -42,7 +43,14 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+export async function loader({ request }: Route.LoaderArgs) {
+  const data = await getAboutPage();
+  const page = data.pages.nodes[0];
+  return { page };
+}
+
 export default function About() {
+  const { page } = useLoaderData<typeof loader>();
   return (
     <>
       <script
@@ -55,18 +63,10 @@ export default function About() {
         <Navigation />
 
         <main role="main" className="max-w-2xl mt-12">
-          <article className="space-y-4 text-sm text-black">
-            <p className="leading-relaxed">
-              Boiler is an underground gallery in Copenhagen by architect
-              Kristian Eley and art historian Johanne Schrøder.
-            </p>{" "}
-            <p className="leading-relaxed">
-              The program is focused on project-based artist collaborations and
-              is shaped by curiosity, a sensibility to matter, and the meeting
-              of generations. The first exhibitions will feature established
-              Danish artists.
-            </p>
-          </article>
+          <article
+            className="space-y-4 text-sm text-black leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: page.content }}
+          ></article>
         </main>
       </div>
     </>
