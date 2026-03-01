@@ -14,7 +14,7 @@ type WpArtistNode = {
   } | null;
 };
 
-type WpWorkImageNode = {
+type WpImageNode = {
   file?: string | null;
   filePath?: string | null;
   fileSize?: number | null;
@@ -28,20 +28,18 @@ type WpWorkNode = {
     year?: number | null;
     photographer?: string | null;
     image?: {
-      node?: WpWorkImageNode | null;
+      node?: WpImageNode | null;
     } | null;
   } | null;
 };
 
 type WpViewNode = {
   title?: string | null;
-  fieldsWork?: {
-    description?: string | null;
-    sizeinfo?: string | null;
-    year?: number | null;
+  fieldsView?: {
+    copyright?: string | null;
     photographer?: string | null;
     image?: {
-      node?: WpWorkImageNode | null;
+      node?: WpImageNode | null;
     } | null;
   } | null;
 };
@@ -82,6 +80,13 @@ export type WorkImage = {
   fileSize: number | null;
 };
 
+export type ViewImage = {
+  file: string | null;
+  filePath: string | null;
+  url: string | null;
+  fileSize: number | null;
+};
+
 export type Work = {
   title: string;
   description: string | null;
@@ -93,11 +98,9 @@ export type Work = {
 
 export type View = {
   title: string;
-  description: string | null;
-  sizeInfo: string | null;
-  year: number | null;
+  copyright: string | null;
   photographer: string | null;
-  image: WorkImage | null;
+  image: ViewImage | null;
 };
 
 export type Exhibition = {
@@ -134,14 +137,12 @@ function normalizeArtist(node: WpArtistNode): Artist {
 }
 
 function normalizeView(node: WpViewNode): View {
-  const fw = node.fieldsWork;
+  const fw = node.fieldsView;
   const img = fw?.image?.node;
 
   return {
     title: str(node.title),
-    description: nstr(fw?.description),
-    sizeInfo: nstr(fw?.sizeinfo),
-    year: nnum(fw?.year),
+    copyright: nstr(fw?.copyright),
     photographer: nstr(fw?.photographer),
     image: img
       ? {
@@ -253,12 +254,10 @@ const EXHIBITIONS_QUERY = gql`
           }
           views {
             nodes {
-              ... on Work {
+              ... on View {
                 title
-                fieldsWork {
-                  description
-                  sizeinfo
-                  year
+                fieldsView {
+                  copyright
                   photographer
                   image {
                     node {
@@ -296,11 +295,10 @@ export async function getCurrentExhibition(): Promise<Exhibition | null> {
 }
 
 export async function getExhibitionBySlug(
-  slug: string
+  slug: string,
 ): Promise<Exhibition | null> {
   const exhibitions = await getAllExhibitions();
   return (
-    exhibitions.find((e) => e.slug.toLowerCase() === slug.toLowerCase()) ??
-    null
+    exhibitions.find((e) => e.slug.toLowerCase() === slug.toLowerCase()) ?? null
   );
 }

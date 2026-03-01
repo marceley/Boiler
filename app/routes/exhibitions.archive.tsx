@@ -71,12 +71,12 @@ export default function Archive() {
                 to={`/exhibitions/${exhibition.slug}`}
                 className="flex flex-col text-sm text-black hover:opacity-80 transition-opacity"
               >
-                <div className="w-full aspect-4/3 bg-gray-200 overflow-hidden">
+                <div className="w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center">
                   {imageUrl ? (
                     <img
                       src={imageUrl}
                       alt={exhibition.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   ) : null}
                 </div>
@@ -87,12 +87,12 @@ export default function Archive() {
                   <p className="italic">{exhibition.title}</p>
                   {formatDateRangeShort(
                     exhibition.startDate,
-                    exhibition.endDate
+                    exhibition.endDate,
                   ) && (
                     <p className="text-black/70">
                       {formatDateRangeShort(
                         exhibition.startDate,
-                        exhibition.endDate
+                        exhibition.endDate,
                       )}
                     </p>
                   )}

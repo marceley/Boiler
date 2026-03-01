@@ -4,8 +4,9 @@ import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
 import { getCurrentExhibition } from "~/models/exhibitions.server";
 import { formatDateRangeEn } from "~/lib/date";
+import { WorksOverlay } from "~/components/WorksOverlay";
 import useEmblaCarousel from "embla-carousel-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const baseUrl = `${galleryData.url}/exhibitions/current`;
 
@@ -55,6 +56,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Current() {
   const { exhibition } = useLoaderData<typeof loader>();
+  const [worksOverlayIndex, setWorksOverlayIndex] = useState<number | null>(
+    null,
+  );
   const [emblaRef, emblaApi] = useEmblaCarousel();
 
   const goToPrev = () => emblaApi?.scrollPrev();
@@ -77,14 +81,14 @@ export default function Current() {
               <div id="views" className="embla">
                 <div className="embla__viewport" ref={emblaRef}>
                   <div className="embla__container">
-                    {exhibition.views.map((view) => (
-                      <div className="embla__slide" key={view.title}>
-                        <div className="w-full aspect-4/3 bg-gray-200 overflow-hidden">
+                    {exhibition.views.map((view, index) => (
+                      <div className="embla__slide" key={view.title + index}>
+                        <div className="w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center">
                           {view.image?.url ? (
                             <img
                               src={view.image.url}
                               alt={view.title}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-contain"
                             />
                           ) : null}
                         </div>
@@ -120,14 +124,19 @@ export default function Current() {
               id="works"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
             >
-              {exhibition.works.map((work) => (
-                <div key={work.title} className="flex flex-col">
-                  <div className="w-full aspect-4/3 bg-gray-200 overflow-hidden">
+              {exhibition.works.map((work, index) => (
+                <button
+                  key={work.title}
+                  type="button"
+                  onClick={() => setWorksOverlayIndex(index)}
+                  className="flex flex-col text-left cursor-pointer hover:opacity-80 transition-opacity"
+                >
+                  <div className="w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center">
                     {work.image?.url ? (
                       <img
                         src={work.image.url}
                         alt={work.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     ) : null}
                   </div>
@@ -139,9 +148,16 @@ export default function Current() {
                     {work.year && <div>{work.year}</div>}
                     {work.sizeInfo && <div>{work.sizeInfo}</div>}
                   </div>
-                </div>
+                </button>
               ))}
             </div>
+            {worksOverlayIndex !== null && (
+              <WorksOverlay
+                works={exhibition.works}
+                selectedIndex={worksOverlayIndex}
+                onClose={() => setWorksOverlayIndex(null)}
+              />
+            )}
           </>
         )}
       </main>
