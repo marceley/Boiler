@@ -101,7 +101,7 @@ export default function Current() {
             )}
           </>
         ) : (
-          <p className="text-sm">No current exhibition.</p>
+          <p className="text-xs">No current exhibition.</p>
         )}
       </main>
     </div>
