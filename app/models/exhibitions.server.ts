@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { gqlClient } from "~/lib/graphql.server";
+import { gqlClient, getContentStatus } from "~/lib/graphql.server";
 
 /* ----------------------------- */
 /* Raw WPGraphQL response types  */
@@ -210,9 +210,81 @@ function normalizeExhibition(node: WpExhibitionNode): Exhibition {
 /* Query + fetch                 */
 /* ----------------------------- */
 
-const EXHIBITIONS_QUERY = gql`
-  query Exhibitions {
-    allExhibition(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
+const EXHIBITIONS_QUERY_PUBLISH = gql`
+  query ExhibitionsPublish {
+    allExhibition(
+      first: 20
+      where: { orderby: { field: DATE, order: DESC }, status: PUBLISH }
+    ) {
+      nodes {
+        databaseId
+        slug
+        title
+        fieldsExhibition {
+          isCurrentExhibition
+          description
+          startDate
+          endDate
+          artists {
+            nodes {
+              ... on Artist {
+                fieldsArtist {
+                  firstName
+                  lastName
+                }
+              }
+            }
+          }
+          works {
+            nodes {
+              ... on Work {
+                title
+                fieldsWork {
+                  description
+                  sizeinfo
+                  year
+                  photographer
+                  image {
+                    node {
+                      file
+                      filePath
+                      fileSize
+                    }
+                  }
+                }
+              }
+            }
+          }
+          views {
+            nodes {
+              ... on View {
+                title
+                fieldsView {
+                  copyright
+                  photographer
+                  image {
+                    node {
+                      file
+                      filePath
+                      fileSize
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const EXHIBITIONS_QUERY_STATI = gql`
+  query ExhibitionsStati {
+    allExhibition(
+      first: 20
+      where: { orderby: { field: DATE, order: DESC }, stati: [DRAFT, PUBLISH] }
+    ) {
       nodes {
         databaseId
         slug
@@ -277,7 +349,12 @@ const EXHIBITIONS_QUERY = gql`
 `;
 
 async function fetchAllExhibitionsRaw(): Promise<WpAllExhibitionQueryResult> {
-  return gqlClient.request<WpAllExhibitionQueryResult>(EXHIBITIONS_QUERY);
+  const contentStatus = getContentStatus();
+  const query =
+    "status" in contentStatus
+      ? EXHIBITIONS_QUERY_PUBLISH
+      : EXHIBITIONS_QUERY_STATI;
+  return gqlClient.request<WpAllExhibitionQueryResult>(query);
 }
 
 /* ----------------------------- */
