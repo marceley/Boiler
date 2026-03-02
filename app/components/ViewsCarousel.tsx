@@ -15,7 +15,7 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
   const goToNext = () => emblaApi?.scrollNext();
 
   const arrows = (
-    <div className="flex flex-row lg:flex-col justify-center lg:justify-center gap-12 lg:gap-2 shrink-0">
+    <div className="flex flex-row lg:flex-col justify-center lg:justify-center gap-12 lg:gap-2 shrink-0 lg:flex-col-reverse">
       <button
         className="embla__prev"
         onClick={goToPrev}
@@ -36,7 +36,7 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
   );
 
   return (
-    <div className="w-full lg:max-w-[60%] mb-12 flex flex-col lg:flex-row gap-4">
+    <div className="w-full lg:max-w-[60%] mb-12 flex flex-col lg:flex-row gap-4 lg:items-center">
       <div id="views" className="embla flex-1 min-w-0">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
