@@ -2,7 +2,7 @@ import type { Route } from "./+types/exhibitions.archive";
 import { galleryData } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
-import { getAllExhibitions } from "~/models/exhibitions.server";
+import { getArchivedExhibitions } from "~/models/exhibitions.server";
 import { ExhibitionCard } from "~/components/ExhibitionCard";
 
 const baseUrl = `${galleryData.url}/exhibitions/archive`;
@@ -47,7 +47,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const exhibitions = await getAllExhibitions();
+  const exhibitions = await getArchivedExhibitions();
   return { exhibitions };
 }
 

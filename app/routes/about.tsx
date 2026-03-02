@@ -3,6 +3,7 @@ import { galleryData, structuredDataAbout } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
 import { getAboutPage } from "~/graphql/pages";
+import { sanitizeHtml } from "~/lib/html";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -65,8 +66,8 @@ export default function About() {
         <main role="main" className="max-w-2xl mt-12">
           <article
             className="space-y-4 text-sm text-black leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: page.content }}
-          ></article>
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(page?.content) }}
+          />
         </main>
       </div>
     </>

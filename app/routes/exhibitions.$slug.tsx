@@ -4,6 +4,7 @@ import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
 import { getExhibitionBySlug } from "~/models/exhibitions.server";
 import { ViewsCarousel } from "~/components/ViewsCarousel";
+import { ImageBox } from "~/components/ImageBox";
 import { ExhibitionHeader } from "~/components/ExhibitionHeader";
 import { ExhibitionDescription } from "~/components/ExhibitionDescription";
 import { WorksGrid } from "~/components/WorksGrid";
@@ -59,6 +60,7 @@ export function meta({ data }: Route.MetaArgs) {
 
 export async function loader({ params }: Route.LoaderArgs) {
   const exhibition = await getExhibitionBySlug(params.slug);
+  console.log(exhibition?.views[0]?.image);
   if (!exhibition) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -76,7 +78,16 @@ export default function ExhibitionDetail() {
       <Navigation />
 
       <main role="main" className="mt-12">
-        <ViewsCarousel views={exhibition.views} />
+        {exhibition.views.length > 1 ? (
+          <ViewsCarousel views={exhibition.views} />
+        ) : exhibition.views.length === 1 ? (
+          <div className="w-full lg:max-w-[75%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <ImageBox
+              src={exhibition.views[0].image?.url}
+              alt={exhibition.views[0].title}
+            />
+          </div>
+        ) : null}
         <ExhibitionHeader
           artists={exhibition.artists}
           title={exhibition.title}
@@ -84,9 +95,7 @@ export default function ExhibitionDetail() {
           endDate={exhibition.endDate}
           dateFormat="long"
         />
-        <ExhibitionDescription
-          html={exhibition.description ?? ""}
-        />
+        <ExhibitionDescription html={exhibition.description ?? ""} />
         <WorksGrid
           works={exhibition.works}
           onWorkClick={setWorksOverlayIndex}

@@ -12,10 +12,8 @@ export function WorkCard({ work, onClick }: WorkCardProps) {
       <ImageBox src={work.image?.url} alt={work.title} />
       <div className="mt-2 text-xs text-black">
         <h3 className="italic">{work.title}</h3>
-        {work.description && (
-          <div className="leading-relaxed">{work.description}</div>
-        )}
         {work.year && <div>{work.year}</div>}
+        {work.description && <div>{work.description}</div>}
         {work.sizeInfo && <div>{work.sizeInfo}</div>}
       </div>
     </>

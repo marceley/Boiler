@@ -57,16 +57,8 @@ export function WorksOverlay({
                   <div className="inline-flex flex-col">
                     <div className="flex items-start justify-start min-h-[60vh]">
                       {work.image?.url ? (
-                        <img
-                          src={work.image.url}
-                          alt={work.title}
-                          className="max-w-full max-h-[70vh] w-auto h-auto object-contain object-left-top block"
-                        />
-                      ) : (
-                        <div className="w-full max-w-2xl">
-                          <ImageBox src={null} alt={work.title} />
-                        </div>
-                      )}
+                        <ImageBox src={work.image.url} alt={work.title} />
+                      ) : null}
                     </div>
                     <div className="mt-2 w-full flex justify-between items-start gap-4 text-xs text-black min-w-0">
                       <div className="min-w-0">

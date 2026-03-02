@@ -16,7 +16,6 @@ type WpArtistNode = {
 
 type WpImageNode = {
   file?: string | null;
-  filePath?: string | null;
   fileSize?: number | null;
 };
 
@@ -49,7 +48,6 @@ type WpExhibitionNode = {
   slug?: string | null;
   title?: string | null;
   fieldsExhibition?: {
-    isCurrentExhibition?: boolean | null;
     description?: string | null;
     startDate?: string | null;
     endDate?: string | null;
@@ -75,14 +73,12 @@ export type Artist = {
 
 export type WorkImage = {
   file: string | null;
-  filePath: string | null;
   url: string | null;
   fileSize: number | null;
 };
 
 export type ViewImage = {
   file: string | null;
-  filePath: string | null;
   url: string | null;
   fileSize: number | null;
 };
@@ -108,7 +104,6 @@ export type Exhibition = {
   slug: string;
   title: string;
   description: string | null;
-  isCurrentExhibition: boolean;
   startDate: string | null;
   endDate: string | null;
   artists: Artist[];
@@ -125,8 +120,6 @@ const str = (v: unknown, fallback = "") =>
 const nstr = (v: unknown) => (typeof v === "string" ? v : null);
 const nnum = (v: unknown) =>
   typeof v === "number" && Number.isFinite(v) ? v : null;
-const bool = (v: unknown, fallback = false) =>
-  typeof v === "boolean" ? v : fallback;
 
 function normalizeArtist(node: WpArtistNode): Artist {
   const firstName = str(node.fieldsArtist?.firstName);
@@ -147,10 +140,9 @@ function normalizeView(node: WpViewNode): View {
     image: img
       ? {
           file: nstr(img.file),
-          filePath: nstr(img.filePath),
           url:
-            img.filePath && process.env.IMAGE_CDN_URL
-              ? `${process.env.IMAGE_CDN_URL.replace(/\/$/, "")}/${img.filePath.replace(/^\//, "")}`
+            img.file && process.env.IMAGE_CDN_URL
+              ? `${process.env.IMAGE_CDN_URL}/${img.file}`
               : null,
           fileSize: nnum(img.fileSize),
         }
@@ -169,13 +161,12 @@ function normalizeWork(node: WpWorkNode): Work {
     sizeInfo: nstr(fw?.sizeinfo),
     year: nnum(fw?.year),
     photographer: nstr(fw?.photographer),
-    image: img
+        image: img
       ? {
           file: nstr(img.file),
-          filePath: nstr(img.filePath),
           url:
-            img.filePath && process.env.IMAGE_CDN_URL
-              ? `${process.env.IMAGE_CDN_URL.replace(/\/$/, "")}/${img.filePath.replace(/^\//, "")}`
+            img.file && process.env.IMAGE_CDN_URL
+              ? `${process.env.IMAGE_CDN_URL}/${img.file}`
               : null,
           fileSize: nnum(img.fileSize),
         }
@@ -197,7 +188,6 @@ function normalizeExhibition(node: WpExhibitionNode): Exhibition {
     slug,
     title: str(node.title),
     description: nstr(fx?.description),
-    isCurrentExhibition: bool(fx?.isCurrentExhibition, false),
     startDate: nstr(fx?.startDate),
     endDate: nstr(fx?.endDate),
     artists,
@@ -221,7 +211,6 @@ const EXHIBITIONS_QUERY_PUBLISH = gql`
         slug
         title
         fieldsExhibition {
-          isCurrentExhibition
           description
           startDate
           endDate
@@ -247,7 +236,6 @@ const EXHIBITIONS_QUERY_PUBLISH = gql`
                   image {
                     node {
                       file
-                      filePath
                       fileSize
                     }
                   }
@@ -265,7 +253,6 @@ const EXHIBITIONS_QUERY_PUBLISH = gql`
                   image {
                     node {
                       file
-                      filePath
                       fileSize
                     }
                   }
@@ -290,7 +277,6 @@ const EXHIBITIONS_QUERY_STATI = gql`
         slug
         title
         fieldsExhibition {
-          isCurrentExhibition
           description
           startDate
           endDate
@@ -316,7 +302,6 @@ const EXHIBITIONS_QUERY_STATI = gql`
                   image {
                     node {
                       file
-                      filePath
                       fileSize
                     }
                   }
@@ -334,7 +319,6 @@ const EXHIBITIONS_QUERY_STATI = gql`
                   image {
                     node {
                       file
-                      filePath
                       fileSize
                     }
                   }
@@ -366,9 +350,35 @@ export async function getAllExhibitions(): Promise<Exhibition[]> {
   return (raw.allExhibition?.nodes ?? []).map(normalizeExhibition);
 }
 
+/** True if today falls within the exhibition's start/end date range. */
+function isExhibitionCurrent(e: Exhibition): boolean {
+  const today = toDateOnly(new Date());
+  const start = e.startDate ? toDateOnly(new Date(e.startDate)) : null;
+  const end = e.endDate ? toDateOnly(new Date(e.endDate)) : null;
+  if (start && end) return start <= today && today <= end;
+  if (start) return today >= start;
+  if (end) return today <= end;
+  return false;
+}
+
+/** True if the exhibition has ended (endDate is in the past). */
+function isExhibitionPast(e: Exhibition): boolean {
+  if (!e.endDate) return false;
+  const today = toDateOnly(new Date());
+  const end = toDateOnly(new Date(e.endDate));
+  return today > end;
+}
+
+function toDateOnly(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 export async function getCurrentExhibition(): Promise<Exhibition | null> {
   const exhibitions = await getAllExhibitions();
-  return exhibitions.find((e) => e.isCurrentExhibition) ?? null;
+  return exhibitions.find(isExhibitionCurrent) ?? null;
 }
 
 export async function getExhibitionBySlug(
@@ -378,4 +388,14 @@ export async function getExhibitionBySlug(
   return (
     exhibitions.find((e) => e.slug.toLowerCase() === slug.toLowerCase()) ?? null
   );
+}
+
+/** Exhibitions that have ended (endDate in the past), most recent first. */
+export async function getArchivedExhibitions(): Promise<Exhibition[]> {
+  const exhibitions = await getAllExhibitions();
+  return exhibitions.filter(isExhibitionPast).sort((a, b) => {
+    const endA = a.endDate ?? "";
+    const endB = b.endDate ?? "";
+    return endB.localeCompare(endA);
+  });
 }
