@@ -46,8 +46,8 @@ export function WorksOverlay({
         ×
       </button>
 
-      <div className="flex-1 flex items-center justify-start p-8 pt-24">
-        <div className="embla w-full max-w-4xl">
+      <div className="block lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-start p-8 pt-24 gap-4">
+        <div className="embla w-full max-w-4xl lg:flex-1 lg:min-w-0">
           <div className="embla__viewport overflow-hidden" ref={emblaRef}>
             <div className="embla__container flex">
               {works.map((work) => (
@@ -84,20 +84,20 @@ export function WorksOverlay({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center gap-2 pl-6 shrink-0">
-          <button
-            onClick={goToNext}
-            className="text-black hover:opacity-70 transition-opacity"
-            aria-label="Next image"
-          >
-            <BsArrowRight className="text-3xl" />
-          </button>
+        <div className="flex flex-row lg:flex-col justify-center gap-12 lg:gap-2 lg:shrink-0 lg:pl-6 mt-4 lg:mt-0">
           <button
             onClick={goToPrev}
             className="text-black hover:opacity-70 transition-opacity"
             aria-label="Previous image"
           >
             <BsArrowLeft className="text-3xl" />
+          </button>
+          <button
+            onClick={goToNext}
+            className="text-black hover:opacity-70 transition-opacity"
+            aria-label="Next image"
+          >
+            <BsArrowRight className="text-3xl" />
           </button>
         </div>
       </div>

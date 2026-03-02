@@ -14,8 +14,29 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
   const goToPrev = () => emblaApi?.scrollPrev();
   const goToNext = () => emblaApi?.scrollNext();
 
+  const arrows = (
+    <div className="flex flex-row lg:flex-col justify-center lg:justify-center gap-12 lg:gap-2 shrink-0">
+      <button
+        className="embla__prev"
+        onClick={goToPrev}
+        aria-label="Previous"
+        type="button"
+      >
+        <BsArrowLeft className="text-gray-800 text-2xl" />
+      </button>
+      <button
+        className="embla__next"
+        onClick={goToNext}
+        aria-label="Next"
+        type="button"
+      >
+        <BsArrowRight className="text-gray-800 text-2xl" />
+      </button>
+    </div>
+  );
+
   return (
-    <div className="w-full lg:max-w-[60%] mb-12 flex gap-4">
+    <div className="w-full lg:max-w-[60%] mb-12 flex flex-col lg:flex-row gap-4">
       <div id="views" className="embla flex-1 min-w-0">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
@@ -31,24 +52,7 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center gap-2 shrink-0">
-        <button
-          className="embla__next"
-          onClick={goToNext}
-          aria-label="Next"
-          type="button"
-        >
-          <BsArrowRight className="text-gray-800 text-2xl" />
-        </button>
-        <button
-          className="embla__prev"
-          onClick={goToPrev}
-          aria-label="Previous"
-          type="button"
-        >
-          <BsArrowLeft className="text-gray-800 text-2xl" />
-        </button>
-      </div>
+      <div>{arrows}</div>
     </div>
   );
 }
