@@ -84,20 +84,20 @@ export function WorksOverlay({
             </div>
           </div>
         </div>
-        <div className="flex flex-row lg:flex-col-reverse justify-center gap-12 lg:gap-2 lg:shrink-0 lg:pl-6 mt-4 lg:-mt-20">
+        <div className="flex flex-row lg:flex-col-reverse justify-center gap-12 lg:gap-2 lg:shrink-0 lg:-mt-20">
           <button
             onClick={goToPrev}
-            className="text-black hover:opacity-70 transition-opacity"
+            className="text-black hover:opacity-50 transition-opacity cursor-pointer"
             aria-label="Previous image"
           >
-            <BsArrowLeft className="text-3xl" />
+            <BsArrowLeft className="text-2xl" />
           </button>
           <button
             onClick={goToNext}
-            className="text-black hover:opacity-70 transition-opacity"
+            className="text-black hover:opacity-50 transition-opacity cursor-pointer"
             aria-label="Next image"
           >
-            <BsArrowRight className="text-3xl" />
+            <BsArrowRight className="text-2xl" />
           </button>
         </div>
       </div>
