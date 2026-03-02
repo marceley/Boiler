@@ -84,7 +84,7 @@ export function WorksOverlay({
             </div>
           </div>
         </div>
-        <div className="flex flex-row lg:flex-col justify-center gap-12 lg:gap-2 lg:shrink-0 lg:pl-6 mt-4 lg:mt-0">
+        <div className="flex flex-row lg:flex-col-reverse justify-center gap-12 lg:gap-2 lg:shrink-0 lg:pl-6 mt-4 lg:-mt-20">
           <button
             onClick={goToPrev}
             className="text-black hover:opacity-70 transition-opacity"
