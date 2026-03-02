@@ -15,9 +15,9 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
   const goToNext = () => emblaApi?.scrollNext();
 
   const arrows = (
-    <div className="flex flex-row lg:flex-col justify-center lg:justify-center gap-12 lg:gap-2 shrink-0 lg:flex-col-reverse">
+    <div className="flex flex-row justify-center lg:justify-center gap-12 lg:gap-2 shrink-0 lg:flex-col-reverse">
       <button
-        className="embla__prev"
+        className="cursor-pointer hover:opacity-50 transition-opacity"
         onClick={goToPrev}
         aria-label="Previous"
         type="button"
@@ -25,7 +25,7 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
         <BsArrowLeft className="text-gray-800 text-2xl" />
       </button>
       <button
-        className="embla__next"
+        className="cursor-pointer hover:opacity-50 transition-opacity"
         onClick={goToNext}
         aria-label="Next"
         type="button"
