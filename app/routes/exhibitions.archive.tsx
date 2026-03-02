@@ -59,11 +59,15 @@ export default function Archive() {
       <Navigation />
 
       <main role="main" className="mt-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {exhibitions.map((exhibition) => (
-            <ExhibitionCard key={exhibition.id} exhibition={exhibition} />
-          ))}
-        </div>
+        {exhibitions.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+            {exhibitions.map((exhibition) => (
+              <ExhibitionCard key={exhibition.id} exhibition={exhibition} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm">No archived exhibitions</p>
+        )}
       </main>
     </div>
   );

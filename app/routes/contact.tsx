@@ -58,43 +58,57 @@ export default function Contact() {
       <div className="min-h-screen p-4 md:p-8 lg:p-12">
         <Navigation />
 
-        <main role="main" className="max-w-2xl mt-12">
-          <address className="text-sm not-italic leading-relaxed">
-            <div className="mb-[6em]">
-              <p>{galleryData.companyName}</p>
-              <p>{galleryData.address.streetAddress}</p>
-              <p>
-                DK-{galleryData.address.postalCode}{" "}
-                {galleryData.address.addressLocality}
-              </p>
-              <p>Denmark</p>
-            </div>
+        <main role="main" className="mt-12">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
+            <address className="text-sm not-italic leading-relaxed max-w-2xl flex-shrink-0">
+              <div className="mb-[6em]">
+                <p>{galleryData.companyName}</p>
+                <p>{galleryData.address.streetAddress}</p>
+                <p>
+                  DK-{galleryData.address.postalCode}{" "}
+                  {galleryData.address.addressLocality}
+                </p>
+                <p>Denmark</p>
+              </div>
 
-            <div className="leading-relaxed">
-              {galleryData.contactPoints.map((point) => (
-                <div key={point.email} className="mb-[2em]">
-                  <p>{point.name}</p>
-                  <p>
-                    <a
-                      href={`tel:${point.telephone.replace(/\s/g, "")}`}
-                      aria-label={`Call ${point.name} at ${point.telephone}`}
-                    >
-                      {point.telephone}
-                    </a>
-                  </p>
-                  <p>
-                    <a
-                      href={`mailto:${point.email}`}
-                      className="underline hover:opacity-60"
-                      aria-label={`Email ${point.name} at ${point.email}`}
-                    >
-                      {point.email}
-                    </a>
-                  </p>
-                </div>
-              ))}
+              <div className="leading-relaxed">
+                {galleryData.contactPoints.map((point) => (
+                  <div key={point.email} className="mb-[2em]">
+                    <p>{point.name}</p>
+                    <p>
+                      <a
+                        href={`tel:${point.telephone.replace(/\s/g, "")}`}
+                        aria-label={`Call ${point.name} at ${point.telephone}`}
+                      >
+                        {point.telephone}
+                      </a>
+                    </p>
+                    <p>
+                      <a
+                        href={`mailto:${point.email}`}
+                        className="underline hover:opacity-60"
+                        aria-label={`Email ${point.name} at ${point.email}`}
+                      >
+                        {point.email}
+                      </a>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </address>
+
+            <div className="mt-8 lg:mt-0 lg:ml-auto">
+              <img
+                src="/kort.png"
+                alt="Map showing gallery location"
+                className="w-full max-w-md object-contain"
+              />
+              <p className="mt-2 text-xs text-black max-w-md">
+                From the street, enter the gate of Store Strandstræde 19. Boiler
+                is located in the far left corner of the courtyard, basement.
+              </p>
             </div>
-          </address>
+          </div>
 
           <div className="mt-[12em]">
             <p className="text-sm text-black mb-4">Subscribe for news</p>

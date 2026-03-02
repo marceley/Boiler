@@ -74,12 +74,20 @@ export default function Home() {
           className="flex-1 flex flex-col justify-center md:mx-auto w-full md:w-auto"
         >
           <div className="flex flex-col justify-center">
-            <img
-              src="/fingers.gif"
-              alt="Boiler"
-              className="w-full h-auto block"
-            />
-            <div className="text-xs mt-2">&copy; 2026 Boiler</div>
+            <a
+              href={"/exhibitions/current"}
+              aria-label="Current exhibition"
+              className="block w-full"
+            >
+              <img
+                src="/frontpage_eye.gif"
+                alt="Boiler"
+                className="w-full h-auto block"
+              />
+            </a>
+            <div className="text-xs mt-2">
+              &copy; 2026 Nina Steen-Knudsen and Boiler
+            </div>
           </div>
         </main>
       </div>
