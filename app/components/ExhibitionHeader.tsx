@@ -28,13 +28,9 @@ export function ExhibitionHeader({
   if (variant === "compact") {
     return (
       <div className={`mt-4 space-y-1 ${className}`.trim()}>
-        <p className="font-medium">
-          {artists.map((a) => a.fullName).join(" & ")}
-        </p>
-        <p className="italic">{title}</p>
-        {formattedDates && (
-          <p className="text-black/70">{formattedDates}</p>
-        )}
+        <p>{artists.map((a) => a.fullName).join(" & ")}</p>
+        <p>{title}</p>
+        {formattedDates && <p>{formattedDates}</p>}
       </div>
     );
   }

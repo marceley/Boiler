@@ -4,6 +4,7 @@ import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
 import { getCurrentExhibition } from "~/models/exhibitions.server";
 import { ViewsCarousel } from "~/components/ViewsCarousel";
+import { ImageBox } from "~/components/ImageBox";
 import { ExhibitionHeader } from "~/components/ExhibitionHeader";
 import { ExhibitionDescription } from "~/components/ExhibitionDescription";
 import { WorksGrid } from "~/components/WorksGrid";
@@ -67,9 +68,18 @@ export default function Current() {
       <Navigation />
 
       <main role="main" className="mt-12">
-        {exhibition && (
+        {exhibition ? (
           <>
-            <ViewsCarousel views={exhibition.views} />
+            {exhibition.views.length > 1 ? (
+              <ViewsCarousel views={exhibition.views} />
+            ) : exhibition.views.length === 1 ? (
+              <div className="w-full lg:max-w-[75%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <ImageBox
+                  src={exhibition.views[0].image?.url}
+                  alt={exhibition.views[0].title}
+                />
+              </div>
+            ) : null}
             <ExhibitionHeader
               artists={exhibition.artists}
               title={exhibition.title}
@@ -77,9 +87,7 @@ export default function Current() {
               endDate={exhibition.endDate}
               dateFormat="long"
             />
-            <ExhibitionDescription
-              html={exhibition.description ?? ""}
-            />
+            <ExhibitionDescription html={exhibition.description ?? ""} />
             <WorksGrid
               works={exhibition.works}
               onWorkClick={setWorksOverlayIndex}
@@ -92,6 +100,8 @@ export default function Current() {
               />
             )}
           </>
+        ) : (
+          <p className="text-sm">No current exhibition.</p>
         )}
       </main>
     </div>

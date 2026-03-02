@@ -8,16 +8,12 @@ export function ImageBox({ src, alt, className = "" }: ImageBoxProps) {
   return (
     <div
       className={
-        "w-full aspect-4/3 bg-[#ebebeb] overflow-hidden flex items-center justify-center" +
+        "w-full aspect-3/2 bg-white overflow-hidden flex items-center justify-center" +
         (className ? ` ${className}` : "")
       }
     >
       {src ? (
-        <img
-          src={src}
-          alt={alt}
-          className="w-full h-full object-contain"
-        />
+        <img src={src} alt={alt} className="w-full h-full object-contain" />
       ) : null}
     </div>
   );
