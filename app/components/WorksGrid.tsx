@@ -10,7 +10,7 @@ export function WorksGrid({ works, onWorkClick }: WorksGridProps) {
   return (
     <div
       id="works"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 w-full"
     >
       {works.map((work, index) => (
         <WorkCard

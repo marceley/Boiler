@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { ImageBox } from "~/components/ImageBox";
 import type { Work } from "~/models/exhibitions.server";
 
@@ -45,7 +46,7 @@ export function WorksOverlay({
         ×
       </button>
 
-      <div className="flex-1 flex items-start justify-start p-8 pt-24 relative">
+      <div className="flex-1 flex items-center justify-start p-8 pt-24">
         <div className="embla w-full max-w-4xl">
           <div className="embla__viewport overflow-hidden" ref={emblaRef}>
             <div className="embla__container flex">
@@ -83,20 +84,22 @@ export function WorksOverlay({
             </div>
           </div>
         </div>
-        <button
-          onClick={goToPrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-black text-3xl hover:opacity-70 transition-opacity"
-          aria-label="Previous image"
-        >
-          ‹
-        </button>
-        <button
-          onClick={goToNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-black text-3xl hover:opacity-70 transition-opacity"
-          aria-label="Next image"
-        >
-          ›
-        </button>
+        <div className="flex flex-col justify-center gap-2 pl-6 shrink-0">
+          <button
+            onClick={goToNext}
+            className="text-black hover:opacity-70 transition-opacity"
+            aria-label="Next image"
+          >
+            <BsArrowRight className="text-3xl" />
+          </button>
+          <button
+            onClick={goToPrev}
+            className="text-black hover:opacity-70 transition-opacity"
+            aria-label="Previous image"
+          >
+            <BsArrowLeft className="text-3xl" />
+          </button>
+        </div>
       </div>
     </div>
   );

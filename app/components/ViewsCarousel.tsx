@@ -2,6 +2,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Fade from "embla-carousel-fade";
 import { ImageBox } from "~/components/ImageBox";
 import type { View } from "~/models/exhibitions.server";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 type ViewsCarouselProps = {
   views: View[];
@@ -14,8 +15,8 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
   const goToNext = () => emblaApi?.scrollNext();
 
   return (
-    <div className="w-full lg:max-w-[60%] mb-12">
-      <div id="views" className="embla">
+    <div className="w-full lg:max-w-[60%] mb-12 flex gap-4">
+      <div id="views" className="embla flex-1 min-w-0">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {views.map((view, index) => (
@@ -29,48 +30,24 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
             ))}
           </div>
         </div>
-        <div className="mt-4">
-          <button
-            className="embla__prev mr-8"
-            onClick={goToPrev}
-            aria-label="Previous"
-            type="button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          <button
-            className="embla__next"
-            onClick={goToNext}
-            aria-label="Next"
-            type="button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
-        </div>
+      </div>
+      <div className="flex flex-col justify-center gap-2 shrink-0">
+        <button
+          className="embla__next"
+          onClick={goToNext}
+          aria-label="Next"
+          type="button"
+        >
+          <BsArrowRight className="text-gray-800 text-2xl" />
+        </button>
+        <button
+          className="embla__prev"
+          onClick={goToPrev}
+          aria-label="Previous"
+          type="button"
+        >
+          <BsArrowLeft className="text-gray-800 text-2xl" />
+        </button>
       </div>
     </div>
   );

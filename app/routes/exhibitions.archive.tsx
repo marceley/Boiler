@@ -66,7 +66,7 @@ export default function Archive() {
             ))}
           </div>
         ) : (
-          <p className="text-xs">No archived exhibitions</p>
+          <p className="text-sm">No archived exhibitions</p>
         )}
       </main>
     </div>
