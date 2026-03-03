@@ -9,4 +9,5 @@ export default [
   route("contact", "routes/contact.tsx"),
   route("api/subscribe", "routes/api.subscribe.ts"),
   route("api/revalidate", "routes/api.revalidate.ts"),
+  route("admin/revalidate", "routes/admin.revalidate.tsx"),
 ] satisfies RouteConfig;
