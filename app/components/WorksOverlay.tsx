@@ -3,7 +3,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { ImageBox } from "~/components/ImageBox";
 import { MarkdownContent } from "~/components/MarkdownContent";
+import { PhotoCredit } from "~/components/PhotoCredit";
 import type { Work } from "~/models/exhibitions.server";
+import { IoCloseOutline } from "react-icons/io5";
 
 type WorksOverlayProps = {
   works: Work[];
@@ -18,16 +20,7 @@ export function WorksOverlay({
 }: WorksOverlayProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     startIndex: selectedIndex,
-    loop: true,
   });
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
 
   const goToPrev = () => emblaApi?.scrollPrev();
   const goToNext = () => emblaApi?.scrollNext();
@@ -41,10 +34,10 @@ export function WorksOverlay({
     >
       <button
         onClick={onClose}
-        className="absolute top-8 right-8 z-10 text-black text-5xl font-light hover:opacity-70 transition-opacity leading-none"
+        className="absolute top-8 right-8 z-10 text-black text-4xl font-light hover:opacity-70 transition-opacity leading-none cursor-pointer"
         aria-label="Close"
       >
-        ×
+        <IoCloseOutline />
       </button>
 
       <div className="block lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-start p-8 pt-24 gap-4">
@@ -65,19 +58,17 @@ export function WorksOverlay({
                     <div className="mt-2 w-full flex justify-between items-start gap-4 text-xs text-black min-w-0">
                       <div className="min-w-0">
                         <h3 className="italic">{work.title}</h3>
-                        {work.description && (
-                          <div className="leading-relaxed [&_p]:mb-1 [&_p:last-child]:mb-0">
-                            <MarkdownContent content={work.description} />
-                          </div>
-                        )}
                         {work.year && <div>{work.year}</div>}
-                        {work.sizeInfo && <div>{work.sizeInfo}</div>}
+                        {work.description && <div>{work.description}</div>}
+                        {work.sizeInformation && (
+                          <div>{work.sizeInformation}</div>
+                        )}
                       </div>
-                      {work.photographer && (
-                        <div className="shrink-0">
-                          Photo: {work.photographer}
-                        </div>
-                      )}
+                      <PhotoCredit
+                        copyright={work.copyright}
+                        photographer={work.photographer}
+                        className="shrink-0"
+                      />
                     </div>
                   </div>
                 </div>

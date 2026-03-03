@@ -1,5 +1,5 @@
 type ImageBoxProps = {
-  src?: string | null;
+  src: string;
   alt: string;
   className?: string;
 };

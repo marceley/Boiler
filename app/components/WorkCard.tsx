@@ -1,5 +1,4 @@
 import { ImageBox } from "~/components/ImageBox";
-import { MarkdownContent } from "~/components/MarkdownContent";
 import type { Work } from "~/models/exhibitions.server";
 
 type WorkCardProps = {
@@ -10,16 +9,14 @@ type WorkCardProps = {
 export function WorkCard({ work, onClick }: WorkCardProps) {
   const content = (
     <>
-      <ImageBox src={work.image?.url} alt={work.title} />
+      {work.image?.url ? (
+        <ImageBox src={work.image.url} alt={work.title} />
+      ) : null}
       <div className="mt-2 text-xs text-black">
         <h3 className="italic">{work.title}</h3>
         {work.year && <div>{work.year}</div>}
-        {work.description && (
-          <div className="[&_p]:mb-1 [&_p:last-child]:mb-0">
-            <MarkdownContent content={work.description} />
-          </div>
-        )}
-        {work.sizeInfo && <div>{work.sizeInfo}</div>}
+        {work.description && <div>{work.description}</div>}
+        {work.sizeInformation && <div>{work.sizeInformation}</div>}
       </div>
     </>
   );
