@@ -58,6 +58,14 @@ export function meta({ data }: Route.MetaArgs) {
   ];
 }
 
+export function headers() {
+  return {
+    "Cache-Control":
+      "public, s-maxage=31536000, stale-while-revalidate",
+    "Vercel-Cache-Tag": "datocms-content",
+  };
+}
+
 export async function loader({ params }: Route.LoaderArgs) {
   const exhibition = await getExhibitionBySlug(params.slug);
   console.log(exhibition?.views[0]?.image);
