@@ -44,6 +44,14 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+export function headers() {
+  return {
+    "Cache-Control":
+      "public, s-maxage=31536000, stale-while-revalidate",
+    "Vercel-Cache-Tag": "datocms-content",
+  };
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
   const page = await getAboutPage();
   return { page };

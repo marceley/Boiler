@@ -8,4 +8,5 @@ export default [
   route("exhibitions/:slug", "routes/exhibitions.$slug.tsx"),
   route("contact", "routes/contact.tsx"),
   route("api/subscribe", "routes/api.subscribe.ts"),
+  route("api/revalidate", "routes/api.revalidate.ts"),
 ] satisfies RouteConfig;
