@@ -60,7 +60,7 @@ export default function Contact() {
 
         <main role="main" className="mt-12">
           <div className="flex flex-col lg:flex-row lg:items-start lg:gap-12">
-            <address className="text-sm not-italic leading-relaxed max-w-2xl flex-shrink-0">
+            <address className="text-sm not-italic leading-relaxed max-w-2xl shrink-0">
               <div className="mb-[6em]">
                 <p>{galleryData.companyName}</p>
                 <p>{galleryData.address.streetAddress}</p>
