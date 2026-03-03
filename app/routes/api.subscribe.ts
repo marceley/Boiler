@@ -1,5 +1,8 @@
 import type { Route } from "./+types/api.subscribe";
+import { buildClient } from "@datocms/cma-client-node";
 import { Resend } from "resend";
+
+const SUBSCRIBER_MODEL_ID = "WUpL2IBGSpmUNTjDUkgO5w";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -43,6 +46,22 @@ export async function action({ request }: Route.ActionArgs) {
         <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
       `,
     });
+
+    // Create record in DatoCMS
+    if (process.env.DATOCMS_EDITOR_TOKEN) {
+      try {
+        const datocmsClient = buildClient({
+          apiToken: process.env.DATOCMS_EDITOR_TOKEN,
+        });
+        await datocmsClient.items.create({
+          item_type: { type: "item_type", id: SUBSCRIBER_MODEL_ID },
+          email,
+          name,
+        });
+      } catch (datocmsError) {
+        console.error("DatoCMS error:", datocmsError);
+      }
+    }
 
     return { success: true, message: "Thank you for subscribing!" };
   } catch (error) {
