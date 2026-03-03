@@ -10,6 +10,7 @@
     "generate:og": "node scripts/generate-og-image.js"
   },
   "dependencies": {
+    "@datocms/cma-client-node": "^5.3.0",
     "@react-email/render": "^1.0.1",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",

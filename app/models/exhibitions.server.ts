@@ -7,29 +7,34 @@ import { datocmsClient } from "~/lib/datocms.server";
 
 type DatocmsImageNode = {
   alt?: string | null;
-  copyright?: string | null;
   url?: string | null;
 };
 
 type DatocmsArtistNode = {
-  firstName?: string | null;
-  lastName?: string | null;
+  firstName: string | null;
+  lastName: string | null;
 };
 
 type DatocmsWorkNode = {
-  title?: string | null;
+  title: string | null;
   description?: string | null;
-  image?: DatocmsImageNode | null;
+  sizeInformation?: string | null;
+  year?: number | null;
+  photographer?: string | null;
+  copyright?: string | null;
+  image: DatocmsImageNode;
 };
 
 type DatocmsViewNode = {
-  title?: string | null;
-  image?: DatocmsImageNode | null;
+  title: string | null;
+  image: DatocmsImageNode | null;
+  photographer?: string | null;
+  copyright?: string | null;
 };
 
 type DatocmsExhibitionNode = {
-  slug?: string | null;
-  title?: string | null;
+  slug: string | null;
+  title: string | null;
   description?: string | null;
   startDate?: string | null;
   endDate?: string | null;
@@ -53,22 +58,19 @@ export type Artist = {
 };
 
 export type WorkImage = {
-  file: string | null;
   url: string | null;
-  fileSize: number | null;
 };
 
 export type ViewImage = {
-  file: string | null;
   url: string | null;
-  fileSize: number | null;
 };
 
 export type Work = {
   title: string;
   description: string | null;
-  sizeInfo: string | null;
+  sizeInformation: string | null;
   year: number | null;
+  copyright: string | null;
   photographer: string | null;
   image: WorkImage | null;
 };
@@ -108,36 +110,27 @@ function normalizeArtist(node: DatocmsArtistNode): Artist {
 }
 
 function normalizeWork(node: DatocmsWorkNode): Work {
-  const copyright = node.image?.copyright ?? null;
   return {
     title: str(node.title),
     description: nstr(node.description),
-    sizeInfo: null,
-    year: null,
-    photographer: nstr(copyright),
-    image: node.image
-      ? {
-          file: null,
-          url: nstr(node.image.url),
-          fileSize: null,
-        }
-      : null,
+    sizeInformation: nstr(node.sizeInformation),
+    year: node.year ?? null,
+    copyright: nstr(node.copyright),
+    photographer: nstr(node.photographer),
+    image: {
+      url: nstr(node.image?.url),
+    },
   };
 }
 
 function normalizeView(node: DatocmsViewNode): View {
-  const copyright = node.image?.copyright ?? null;
   return {
     title: str(node.title),
-    copyright: nstr(copyright),
-    photographer: nstr(copyright),
-    image: node.image
-      ? {
-          file: null,
-          url: nstr(node.image.url),
-          fileSize: null,
-        }
-      : null,
+    copyright: nstr(node.copyright),
+    photographer: nstr(node.photographer),
+    image: {
+      url: nstr(node.image?.url),
+    },
   };
 }
 
@@ -178,6 +171,10 @@ const EXHIBITIONS_QUERY = gql`
       works {
         title
         description
+        year
+        sizeInformation
+        photographer
+        copyright
         image {
           alt
           copyright
@@ -186,9 +183,10 @@ const EXHIBITIONS_QUERY = gql`
       }
       views {
         title
+        photographer
+        copyright
         image {
           alt
-          copyright
           url
         }
       }
@@ -197,9 +195,8 @@ const EXHIBITIONS_QUERY = gql`
 `;
 
 async function fetchAllExhibitions(): Promise<Exhibition[]> {
-  const result = await datocmsClient.request<DatocmsAllExhibitionsResult>(
-    EXHIBITIONS_QUERY,
-  );
+  const result =
+    await datocmsClient.request<DatocmsAllExhibitionsResult>(EXHIBITIONS_QUERY);
   const nodes = result.allExhibitions ?? [];
   return nodes.map(normalizeExhibition);
 }

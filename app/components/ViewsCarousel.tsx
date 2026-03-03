@@ -1,6 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
-import Fade from "embla-carousel-fade";
 import { ImageBox } from "~/components/ImageBox";
+import { PhotoCredit } from "~/components/PhotoCredit";
 import type { View } from "~/models/exhibitions.server";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
@@ -9,7 +9,7 @@ type ViewsCarouselProps = {
 };
 
 export function ViewsCarousel({ views }: ViewsCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({}, [Fade()]);
+  const [emblaRef, emblaApi] = useEmblaCarousel();
 
   const goToPrev = () => emblaApi?.scrollPrev();
   const goToNext = () => emblaApi?.scrollNext();
@@ -42,10 +42,14 @@ export function ViewsCarousel({ views }: ViewsCarouselProps) {
           <div className="embla__container">
             {views.map((view, index) => (
               <div className="embla__slide" key={view.title + index}>
-                <ImageBox src={view.image?.url} alt={view.title} />
+                {view.image?.url ? (
+                  <ImageBox src={view.image.url} alt={view.title} />
+                ) : null}
                 <div className="mt-2 text-xs text-black text-right">
-                  {view.copyright && <span>{view.copyright}</span>}{" "}
-                  {view.photographer && <span>Photo: {view.photographer}</span>}
+                  <PhotoCredit
+                    copyright={view.copyright}
+                    photographer={view.photographer}
+                  />
                 </div>
               </div>
             ))}
