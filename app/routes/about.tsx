@@ -2,8 +2,8 @@ import type { Route } from "./+types/about";
 import { galleryData, structuredDataAbout } from "~/data/gallery";
 import { Navigation } from "~/components/Navigation";
 import { useLoaderData } from "react-router";
-import { getAboutPage } from "~/graphql/pages";
-import { sanitizeHtml } from "~/lib/html";
+import { getAboutPage } from "~/models/datocms-pages.server";
+import { MarkdownContent } from "~/components/MarkdownContent";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -45,8 +45,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const data = await getAboutPage();
-  const page = data.pages.nodes[0];
+  const page = await getAboutPage();
   return { page };
 }
 
@@ -64,10 +63,9 @@ export default function About() {
         <Navigation />
 
         <main role="main" className="max-w-2xl mt-12">
-          <article
-            className="space-y-4 text-sm text-black leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: sanitizeHtml(page?.content) }}
-          />
+          <article className="space-y-4 text-sm text-black leading-relaxed">
+            <MarkdownContent content={page?.content ?? ""} />
+          </article>
         </main>
       </div>
     </>

@@ -1,16 +1,14 @@
-import { sanitizeHtml } from "~/lib/html";
+import { MarkdownContent } from "~/components/MarkdownContent";
 
 type ExhibitionDescriptionProps = {
-  html: string;
+  markdown: string;
 };
 
-export function ExhibitionDescription({ html }: ExhibitionDescriptionProps) {
-  const cleaned = sanitizeHtml(html);
-  if (!cleaned) return null;
+export function ExhibitionDescription({ markdown }: ExhibitionDescriptionProps) {
+  if (!markdown?.trim()) return null;
   return (
-    <article
-      className="mb-16 space-y-4 text-sm text-black leading-relaxed lg:columns-2 lg:gap-x-12"
-      dangerouslySetInnerHTML={{ __html: cleaned }}
-    />
+    <article className="mb-16 text-sm text-black leading-relaxed lg:columns-2 lg:gap-x-12">
+      <MarkdownContent content={markdown} />
+    </article>
   );
 }

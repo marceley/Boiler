@@ -1,64 +1,45 @@
 import { gql } from "graphql-request";
-import { gqlClient, getContentStatus } from "~/lib/graphql.server";
+import { datocmsClient } from "~/lib/datocms.server";
 
 /* ----------------------------- */
-/* Raw WPGraphQL response types  */
+/* Raw DatoCMS response types    */
 /* ----------------------------- */
 
-type WpNodeConnection<T> = { nodes: T[] };
-
-type WpArtistNode = {
-  fieldsArtist?: {
-    firstName?: string | null;
-    lastName?: string | null;
-  } | null;
+type DatocmsImageNode = {
+  alt?: string | null;
+  copyright?: string | null;
+  url?: string | null;
 };
 
-type WpImageNode = {
-  file?: string | null;
-  fileSize?: number | null;
+type DatocmsArtistNode = {
+  firstName?: string | null;
+  lastName?: string | null;
 };
 
-type WpWorkNode = {
+type DatocmsWorkNode = {
   title?: string | null;
-  fieldsWork?: {
-    description?: string | null;
-    sizeinfo?: string | null;
-    year?: number | null;
-    photographer?: string | null;
-    image?: {
-      node?: WpImageNode | null;
-    } | null;
-  } | null;
+  description?: string | null;
+  image?: DatocmsImageNode | null;
 };
 
-type WpViewNode = {
+type DatocmsViewNode = {
   title?: string | null;
-  fieldsView?: {
-    copyright?: string | null;
-    photographer?: string | null;
-    image?: {
-      node?: WpImageNode | null;
-    } | null;
-  } | null;
+  image?: DatocmsImageNode | null;
 };
 
-type WpExhibitionNode = {
-  databaseId: number;
+type DatocmsExhibitionNode = {
   slug?: string | null;
   title?: string | null;
-  fieldsExhibition?: {
-    description?: string | null;
-    startDate?: string | null;
-    endDate?: string | null;
-    artists?: WpNodeConnection<WpArtistNode> | null;
-    works?: WpNodeConnection<WpWorkNode> | null;
-    views?: WpNodeConnection<WpViewNode> | null;
-  } | null;
+  description?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  artists?: DatocmsArtistNode[];
+  works?: DatocmsWorkNode[];
+  views?: DatocmsViewNode[];
 };
 
-type WpAllExhibitionQueryResult = {
-  allExhibition: WpNodeConnection<WpExhibitionNode>;
+type DatocmsAllExhibitionsResult = {
+  allExhibitions: DatocmsExhibitionNode[];
 };
 
 /* ----------------------------- */
@@ -100,7 +81,7 @@ export type View = {
 };
 
 export type Exhibition = {
-  id: number; // databaseId
+  id: string;
   slug: string;
   title: string;
   description: string | null;
@@ -118,81 +99,63 @@ export type Exhibition = {
 const str = (v: unknown, fallback = "") =>
   typeof v === "string" ? v : fallback;
 const nstr = (v: unknown) => (typeof v === "string" ? v : null);
-const nnum = (v: unknown) =>
-  typeof v === "number" && Number.isFinite(v) ? v : null;
 
-function normalizeArtist(node: WpArtistNode): Artist {
-  const firstName = str(node.fieldsArtist?.firstName);
-  const lastName = str(node.fieldsArtist?.lastName);
+function normalizeArtist(node: DatocmsArtistNode): Artist {
+  const firstName = str(node.firstName);
+  const lastName = str(node.lastName);
   const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();
-
   return { firstName, lastName, fullName };
 }
 
-function normalizeView(node: WpViewNode): View {
-  const fw = node.fieldsView;
-  const img = fw?.image?.node;
-
+function normalizeWork(node: DatocmsWorkNode): Work {
+  const copyright = node.image?.copyright ?? null;
   return {
     title: str(node.title),
-    copyright: nstr(fw?.copyright),
-    photographer: nstr(fw?.photographer),
-    image: img
+    description: nstr(node.description),
+    sizeInfo: null,
+    year: null,
+    photographer: nstr(copyright),
+    image: node.image
       ? {
-          file: nstr(img.file),
-          url:
-            img.file && process.env.IMAGE_CDN_URL
-              ? `${process.env.IMAGE_CDN_URL}/${img.file}`
-              : null,
-          fileSize: nnum(img.fileSize),
+          file: null,
+          url: nstr(node.image.url),
+          fileSize: null,
         }
       : null,
   };
 }
 
-function normalizeWork(node: WpWorkNode): Work {
-  const fw = node.fieldsWork;
-  const img = fw?.image?.node;
-
-  // Prefer ACF title, fallback to WP title, else empty string
+function normalizeView(node: DatocmsViewNode): View {
+  const copyright = node.image?.copyright ?? null;
   return {
     title: str(node.title),
-    description: nstr(fw?.description),
-    sizeInfo: nstr(fw?.sizeinfo),
-    year: nnum(fw?.year),
-    photographer: nstr(fw?.photographer),
-        image: img
+    copyright: nstr(copyright),
+    photographer: nstr(copyright),
+    image: node.image
       ? {
-          file: nstr(img.file),
-          url:
-            img.file && process.env.IMAGE_CDN_URL
-              ? `${process.env.IMAGE_CDN_URL}/${img.file}`
-              : null,
-          fileSize: nnum(img.fileSize),
+          file: null,
+          url: nstr(node.image.url),
+          fileSize: null,
         }
       : null,
   };
 }
 
-function normalizeExhibition(node: WpExhibitionNode): Exhibition {
-  const fx = node.fieldsExhibition;
-
-  const artists = (fx?.artists?.nodes ?? []).map(normalizeArtist);
-  const works = (fx?.works?.nodes ?? []).map(normalizeWork);
-  const views = (fx?.views?.nodes ?? []).map(normalizeView);
-
-  const slug = str(node.slug) || `exhibition-${node.databaseId}`;
-
+function normalizeExhibition(node: DatocmsExhibitionNode): Exhibition {
+  const slug = str(node.slug);
+  if (!slug) {
+    throw new Error(`Exhibition "${node.title ?? "unknown"}" is missing slug`);
+  }
   return {
-    id: node.databaseId,
+    id: slug,
     slug,
     title: str(node.title),
-    description: nstr(fx?.description),
-    startDate: nstr(fx?.startDate),
-    endDate: nstr(fx?.endDate),
-    artists,
-    works,
-    views,
+    description: nstr(node.description),
+    startDate: nstr(node.startDate),
+    endDate: nstr(node.endDate),
+    artists: (node.artists ?? []).map(normalizeArtist),
+    works: (node.works ?? []).map(normalizeWork),
+    views: (node.views ?? []).map(normalizeView),
   };
 }
 
@@ -200,145 +163,45 @@ function normalizeExhibition(node: WpExhibitionNode): Exhibition {
 /* Query + fetch                 */
 /* ----------------------------- */
 
-const EXHIBITIONS_QUERY_PUBLISH = gql`
-  query ExhibitionsPublish {
-    allExhibition(
-      first: 20
-      where: { orderby: { field: DATE, order: DESC }, status: PUBLISH }
-    ) {
-      nodes {
-        databaseId
-        slug
+const EXHIBITIONS_QUERY = gql`
+  query AllExhibitions {
+    allExhibitions {
+      slug
+      title
+      description
+      startDate
+      endDate
+      artists {
+        firstName
+        lastName
+      }
+      works {
         title
-        fieldsExhibition {
-          description
-          startDate
-          endDate
-          artists {
-            nodes {
-              ... on Artist {
-                fieldsArtist {
-                  firstName
-                  lastName
-                }
-              }
-            }
-          }
-          works {
-            nodes {
-              ... on Work {
-                title
-                fieldsWork {
-                  description
-                  sizeinfo
-                  year
-                  photographer
-                  image {
-                    node {
-                      file
-                      fileSize
-                    }
-                  }
-                }
-              }
-            }
-          }
-          views {
-            nodes {
-              ... on View {
-                title
-                fieldsView {
-                  copyright
-                  photographer
-                  image {
-                    node {
-                      file
-                      fileSize
-                    }
-                  }
-                }
-              }
-            }
-          }
+        description
+        image {
+          alt
+          copyright
+          url
+        }
+      }
+      views {
+        title
+        image {
+          alt
+          copyright
+          url
         }
       }
     }
   }
 `;
 
-const EXHIBITIONS_QUERY_STATI = gql`
-  query ExhibitionsStati {
-    allExhibition(
-      first: 20
-      where: { orderby: { field: DATE, order: DESC }, stati: [DRAFT, PUBLISH] }
-    ) {
-      nodes {
-        databaseId
-        slug
-        title
-        fieldsExhibition {
-          description
-          startDate
-          endDate
-          artists {
-            nodes {
-              ... on Artist {
-                fieldsArtist {
-                  firstName
-                  lastName
-                }
-              }
-            }
-          }
-          works {
-            nodes {
-              ... on Work {
-                title
-                fieldsWork {
-                  description
-                  sizeinfo
-                  year
-                  photographer
-                  image {
-                    node {
-                      file
-                      fileSize
-                    }
-                  }
-                }
-              }
-            }
-          }
-          views {
-            nodes {
-              ... on View {
-                title
-                fieldsView {
-                  copyright
-                  photographer
-                  image {
-                    node {
-                      file
-                      fileSize
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-async function fetchAllExhibitionsRaw(): Promise<WpAllExhibitionQueryResult> {
-  const contentStatus = getContentStatus();
-  const query =
-    "status" in contentStatus
-      ? EXHIBITIONS_QUERY_PUBLISH
-      : EXHIBITIONS_QUERY_STATI;
-  return gqlClient.request<WpAllExhibitionQueryResult>(query);
+async function fetchAllExhibitions(): Promise<Exhibition[]> {
+  const result = await datocmsClient.request<DatocmsAllExhibitionsResult>(
+    EXHIBITIONS_QUERY,
+  );
+  const nodes = result.allExhibitions ?? [];
+  return nodes.map(normalizeExhibition);
 }
 
 /* ----------------------------- */
@@ -346,8 +209,7 @@ async function fetchAllExhibitionsRaw(): Promise<WpAllExhibitionQueryResult> {
 /* ----------------------------- */
 
 export async function getAllExhibitions(): Promise<Exhibition[]> {
-  const raw = await fetchAllExhibitionsRaw();
-  return (raw.allExhibition?.nodes ?? []).map(normalizeExhibition);
+  return fetchAllExhibitions();
 }
 
 /** True if today falls within the exhibition's start/end date range. */

@@ -95,7 +95,7 @@ export default function ExhibitionDetail() {
           endDate={exhibition.endDate}
           dateFormat="long"
         />
-        <ExhibitionDescription html={exhibition.description ?? ""} />
+        <ExhibitionDescription markdown={exhibition.description ?? ""} />
         <WorksGrid
           works={exhibition.works}
           onWorkClick={setWorksOverlayIndex}

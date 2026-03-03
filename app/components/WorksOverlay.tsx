@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { ImageBox } from "~/components/ImageBox";
+import { MarkdownContent } from "~/components/MarkdownContent";
 import type { Work } from "~/models/exhibitions.server";
 
 type WorksOverlayProps = {
@@ -65,8 +66,8 @@ export function WorksOverlay({
                       <div className="min-w-0">
                         <h3 className="italic">{work.title}</h3>
                         {work.description && (
-                          <div className="leading-relaxed">
-                            {work.description}
+                          <div className="leading-relaxed [&_p]:mb-1 [&_p:last-child]:mb-0">
+                            <MarkdownContent content={work.description} />
                           </div>
                         )}
                         {work.year && <div>{work.year}</div>}
