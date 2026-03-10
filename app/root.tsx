@@ -20,7 +20,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Playfair+Display:ital@1&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap",
   },
   {
     rel: "preload",
@@ -75,7 +75,7 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
+  let message = "Error";
   let details = "An unexpected error occurred.";
   let stack: string | undefined;
 

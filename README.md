@@ -91,6 +91,40 @@ This project is configured for deployment on Vercel. The `vercel.json` file cont
    - `RESEND_FROM_EMAIL`
 4. Deploy
 
+## Caching
+
+DatoCMS content (exhibitions, about page) is cached at Vercel's edge with tag-based invalidation. See the routes that set `Vercel-Cache-Tag: datocms-content` and the `/api/revalidate` webhook endpoint.
+
+### Viewing cached content
+
+Vercel does not expose a list of cached URLs or entries. The cache is opaque, but you can still inspect and manage it:
+
+**Check if a specific URL is cached**
+
+```bash
+vercel httpstat https://your-domain.com/exhibitions/current
+```
+
+Shows response timing and whether the response came from the CDN cache.
+
+**Response headers**
+
+When a response is served from cache, Vercel adds headers like `x-vercel-cache: HIT` (or `MISS`). Inspect these in the browser's Network tab or with:
+
+```bash
+curl -I https://your-domain.com/exhibitions/current
+```
+
+**Observability**
+
+In the Vercel dashboard: **Project → Analytics** (or **Observability**). You can see cache hit rates and edge request metrics, but not individual cached URLs.
+
+**Manual revalidation**
+
+- **Admin page:** Visit `/admin/revalidate` and enter your `REVALIDATE_SECRET`
+- **CLI:** `vercel cache invalidate --tag datocms-content`
+- **API:** `curl -X POST https://your-domain.com/api/revalidate -H "Authorization: Bearer YOUR_REVALIDATE_SECRET"`
+
 ## Project Structure
 
 ```
