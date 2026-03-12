@@ -20,6 +20,7 @@ export function WorksOverlay({
 }: WorksOverlayProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     startIndex: selectedIndex,
+    loop: true,
   });
 
   const goToPrev = () => emblaApi?.scrollPrev();
@@ -41,7 +42,7 @@ export function WorksOverlay({
       </button>
 
       <div className="block lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-start p-8 pt-24 gap-4">
-        <div className="embla w-full max-w-4xl lg:flex-1 lg:min-w-0">
+        <div className="embla w-full max-w-4xl lg:flex-1 lg:min-w-0 mb-4">
           <div className="embla__viewport overflow-hidden" ref={emblaRef}>
             <div className="embla__container flex">
               {works.map((work) => (
@@ -50,12 +51,12 @@ export function WorksOverlay({
                   className="embla__slide flex-[0_0_100%] min-w-0 flex flex-col items-start"
                 >
                   <div className="inline-flex flex-col">
-                    <div className="flex items-start justify-start min-h-[60vh]">
+                    <div className="flex items-start justify-start">
                       {work.image?.url ? (
                         <ImageBox src={work.image.url} alt={work.title} />
                       ) : null}
                     </div>
-                    <div className="mt-2 w-full flex justify-between items-start gap-4 text-xs text-black min-w-0">
+                    <div className="mt-2 w-full flex flex-col md:flex-row md:justify-between md:items-start gap-4 text-xs text-black min-w-0">
                       <div className="min-w-0">
                         <h3 className="italic">{work.title}</h3>
                         {work.year && <div>{work.year}</div>}
