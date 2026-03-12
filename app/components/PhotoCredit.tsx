@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 type PhotoCreditProps = {
   copyright?: string | null;
   photographer?: string | null;
@@ -12,7 +14,12 @@ export function PhotoCredit({
   if (!copyright && !photographer) return null;
 
   return (
-    <div className={className}>
+    <div
+      className={twMerge(
+        "flex flex-col gap-1 md:flex-row md:justify-end",
+        className,
+      )}
+    >
       {copyright && <span>{copyright}</span>}
       {copyright && photographer && " "}
       {photographer && <span>Photo: {photographer}</span>}

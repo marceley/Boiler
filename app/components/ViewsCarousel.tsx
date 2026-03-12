@@ -9,7 +9,7 @@ type ViewsCarouselProps = {
 };
 
 export function ViewsCarousel({ views }: ViewsCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   const goToPrev = () => emblaApi?.scrollPrev();
   const goToNext = () => emblaApi?.scrollNext();
